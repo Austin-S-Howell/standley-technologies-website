@@ -1,0 +1,12 @@
+{
+  "name": "Standley Technologies LLC",
+  "short_name": "Standley Tech",
+  "icons": [
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "theme_color": "#163A2B",
+  "background_color": "#F7F8F8",
+  "display": "standalone",
+  "start_url": "/"
+}
