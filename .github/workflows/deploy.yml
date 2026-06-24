@@ -1,10 +1,8 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Deploy on every push to the default branch
-  push:
-    branches: [main]
-  # ...and allow manual runs from the Actions tab
+  # Manual-only — deploy is triggered from the Actions tab ("Run workflow"),
+  # never automatically on push.
   workflow_dispatch:
 
 # Least-privilege token + the OIDC id-token the Pages deploy needs

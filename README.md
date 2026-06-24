@@ -81,8 +81,9 @@ and it flows through every page.
 
 ## Deployment
 
-Push to `main` → `.github/workflows/deploy.yml` builds and deploys to **GitHub Pages**.
-In the repo, set **Settings → Pages → Source = GitHub Actions**. No secrets required.
+Deployment is **manual**: in the repo's **Actions** tab, run the **Deploy to GitHub Pages**
+workflow (Run workflow). It builds and deploys to **GitHub Pages** — it does **not** deploy on push.
+Set **Settings → Pages → Source = GitHub Actions**. No secrets required.
 
 **Custom domain:** `public/CNAME` holds the domain; point **Cloudflare** DNS at GitHub Pages
 (apex `A`/`AAAA` records + `www` `CNAME`), set Cloudflare **SSL/TLS = Full**, and enable

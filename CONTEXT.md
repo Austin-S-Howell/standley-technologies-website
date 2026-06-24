@@ -192,9 +192,10 @@ hero, solid on scroll. Focus-trapped `MobileMenu` on small screens.
 
 ## 10. Deployment
 
-Push to `main` → `.github/workflows/deploy.yml` builds and deploys to **GitHub Pages**
-(set **Settings → Pages → Source = GitHub Actions**; no secrets needed). Deep links work via the
-`spa-404-fallback` plugin (`vite.config.ts` copies `dist/index.html` → `dist/404.html`).
+Deploys are **manual** (not on push): from the repo's **Actions** tab, open **Deploy to GitHub
+Pages** → **Run workflow** (on `main`). `.github/workflows/deploy.yml` then builds and deploys to
+**GitHub Pages** (set **Settings → Pages → Source = GitHub Actions**; no secrets needed). Deep links
+work via the `spa-404-fallback` plugin (`vite.config.ts` copies `dist/index.html` → `dist/404.html`).
 
 **Cloudflare DNS** (custom domain in `public/CNAME`): apex `A`/`AAAA` → GitHub Pages IPs, `www`
 `CNAME` → `<user>.github.io`; **SSL/TLS = Full** (not Flexible → redirect loop); keep records
@@ -250,6 +251,7 @@ Newest first. Add a one-line entry whenever something notable changes (and bump 
 - **Branded og-image** — replaced the placeholder `public/og-image.png` with a real 1200×630 social-share card (summit logo + "Standley Technologies LLC" + tagline + URL on the brand gradient), generated with ImageMagick.
 - **Contact form polish** — removed the consent checkbox; nicer success card (centered, check badge, email + phone links); the Web3Forms subject now includes the sender's name and omits empty fields.
 - **Ship-readiness pass** — ran a final adversarial review (0 blockers) and applied the polish it found: optimized the founder headshot (985 KB PNG → **8 KB** 256² JPG, with `width`/`height` to prevent layout shift), re-exported the og-image as 8-bit (700 KB → **106 KB**), added the 4th pillar to the Services SEO description, switched the Terms→Privacy link to a react-router `<Link>`, and trimmed unused env-var docs (`.env.example` / `vite-env.d.ts`).
+- **Pages deploy is now manual** — `deploy.yml` triggers only on `workflow_dispatch` (Actions tab → Run workflow), not automatically on push to `main`.
 
 ### 2026-06-21
 - Added a **scroll-interaction system** (`ScrollProgress`, `Parallax`, directional `Reveal`, `StaggerGroup/Item`) and applied it across every page; `MountainBackdrop` glows + ridges now parallax/fade on scroll.
