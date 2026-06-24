@@ -25,7 +25,7 @@ function spaFallback(): Plugin {
 }
 
 export default defineConfig({
-  // Custom apex domain (standleytech.com) → served from root.
+  // Custom apex domain (standleytechnologies.com) → served from root.
   base: '/',
   plugins: [react(), tsconfigPaths(), spaFallback()],
 })

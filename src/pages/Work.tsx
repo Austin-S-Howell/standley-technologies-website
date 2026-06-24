@@ -13,6 +13,7 @@ import { Eyebrow } from '@/components/ui/Eyebrow'
 import { buttonClasses } from '@/components/ui/Button'
 import { AnalyticsDashboardDemo } from '@/components/demos/AnalyticsDashboardDemo'
 import { PowerBiPortalDemo } from '@/components/demos/PowerBiPortalDemo'
+import { LocalLlmDemo } from '@/components/demos/LocalLlmDemo'
 import { CloudInfraDemo } from '@/components/demos/CloudInfraDemo'
 import { UptimeMonitorDemo } from '@/components/demos/UptimeMonitorDemo'
 import { PageHero } from '@/sections/PageHero'
@@ -43,6 +44,15 @@ const demos: {
       'Give clients a branded, self-serve portal with live KPIs and embedded Power BI reports — no spreadsheets, no email threads.',
     points: ['Embedded Power BI reports', 'Live KPIs & role-based access', 'Your brand, your data'],
     Demo: PowerBiPortalDemo,
+  },
+  {
+    id: 'local-llm',
+    eyebrow: 'Private Local LLM',
+    title: 'Private AI that never leaves your network',
+    description:
+      'A self-hosted LLM that answers from your own documents — chat assistants, copilots, and automation with zero data sent to third-party APIs.',
+    points: ['Runs on your own hardware', 'Grounded in your documents (RAG)', 'No per-token API bills'],
+    Demo: LocalLlmDemo,
   },
   {
     id: 'cloud-devops',

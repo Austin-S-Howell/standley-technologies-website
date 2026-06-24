@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Code2, Cloud, Headset, Check, ArrowRight } from 'lucide-react'
+import { Code2, Cloud, Headset, Cpu, Check, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { siteConfig } from '@/lib/siteConfig'
 import { pageMeta } from '@/lib/seo'
@@ -14,7 +14,12 @@ import { ProcessSteps } from '@/sections/ProcessSteps'
 import { TechBadges } from '@/sections/TechBadges'
 import { CtaBand } from '@/sections/CtaBand'
 
-const serviceIcons = { software: Code2, 'cloud-devops': Cloud, consulting: Headset } as const
+const serviceIcons = {
+  software: Code2,
+  'cloud-devops': Cloud,
+  consulting: Headset,
+  'local-llm': Cpu,
+} as const
 
 const servicesJsonLd = siteConfig.services.map((s) => ({
   '@context': 'https://schema.org',

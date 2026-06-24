@@ -1,14 +1,11 @@
-import { Link } from 'react-router-dom'
-import { Mail, MapPin, Clock, CalendarClock } from 'lucide-react'
+import { Mail, Phone, MapPin, Clock } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { cn } from '@/lib/cn'
 import { siteConfig } from '@/lib/siteConfig'
 import { pageMeta } from '@/lib/seo'
 import { Seo } from '@/components/Seo'
 import { Reveal } from '@/components/Reveal'
 import { Container } from '@/components/ui/Container'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { buttonClasses } from '@/components/ui/Button'
 import { PageHero } from '@/sections/PageHero'
 import { Faq } from '@/sections/Faq'
 import { ContactForm } from '@/sections/contact/ContactForm'
@@ -25,6 +22,12 @@ const faqJsonLd = {
 
 const details: { icon: LucideIcon; label: string; value: string; href?: string }[] = [
   { icon: Mail, label: 'Email', value: siteConfig.email, href: `mailto:${siteConfig.email}` },
+  {
+    icon: Phone,
+    label: 'Phone',
+    value: siteConfig.phone,
+    href: `tel:+1${siteConfig.phone.replace(/\D/g, '')}`,
+  },
   { icon: MapPin, label: 'Service area', value: siteConfig.serviceArea },
   { icon: Clock, label: 'Response time', value: siteConfig.responseTime },
 ]
@@ -72,13 +75,6 @@ export default function Contact() {
                   A new build, a cloud migration, or ongoing support — whatever you’re working on,
                   we’d love to hear about it.
                 </p>
-
-                <Link
-                  to="/book"
-                  className={cn(buttonClasses('primary', 'md'), 'mt-6 w-full sm:w-auto')}
-                >
-                  <CalendarClock className="h-4 w-4" aria-hidden /> Book a 30-min call
-                </Link>
 
                 <ul className="mt-8 space-y-4">
                   {details.map((d) => (

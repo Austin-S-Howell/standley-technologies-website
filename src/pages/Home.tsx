@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Code2, Cloud, Headset } from 'lucide-react'
+import { ArrowRight, Code2, Cloud, Headset, Cpu } from 'lucide-react'
 import { siteConfig } from '@/lib/siteConfig'
 import { pageMeta } from '@/lib/seo'
 import { useCountUp } from '@/hooks/useCountUp'
@@ -16,10 +16,15 @@ import { Card } from '@/components/ui/Card'
 import { buttonClasses } from '@/components/ui/Button'
 import { AnalyticsDashboardDemo } from '@/components/demos/AnalyticsDashboardDemo'
 import { CloudInfraDemo } from '@/components/demos/CloudInfraDemo'
-import { UptimeMonitorDemo } from '@/components/demos/UptimeMonitorDemo'
+import { LocalLlmDemo } from '@/components/demos/LocalLlmDemo'
 import { CtaBand } from '@/sections/CtaBand'
 
-const serviceIcons = { software: Code2, 'cloud-devops': Cloud, consulting: Headset } as const
+const serviceIcons = {
+  software: Code2,
+  'cloud-devops': Cloud,
+  consulting: Headset,
+  'local-llm': Cpu,
+} as const
 
 function CountStat({ to, suffix = '', label }: { to: number; suffix?: string; label: string }) {
   const { ref, value } = useCountUp(to)
@@ -97,7 +102,7 @@ export default function Home() {
       <section className="border-b border-neutral-200 bg-neutral-50 py-14">
         <Container>
           <div className="grid grid-cols-2 gap-8 text-center sm:grid-cols-4">
-            <CountStat to={3} label="Core service lines" />
+            <CountStat to={4} label="Core service lines" />
             <CountStat to={100} suffix="%" label="Senior engineering" />
             <TextStat value="24/7" label="Managed monitoring" />
             <TextStat value="3" label="Cloud platforms" />
@@ -108,8 +113,8 @@ export default function Home() {
       {/* Services */}
       <section className="bg-neutral-0 py-20">
         <Container>
-          <SectionHeading align="center" eyebrow="What we do" title="Three ways we move you forward" />
-          <StaggerGroup className="mt-12 grid gap-6 md:grid-cols-3">
+          <SectionHeading align="center" eyebrow="What we do" title="Four ways we move you forward" />
+          <StaggerGroup className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {siteConfig.services.map((service) => {
               const Icon = serviceIcons[service.id]
               return (
@@ -145,10 +150,10 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <Reveal direction="left">
-              <CloudInfraDemo />
+              <LocalLlmDemo />
             </Reveal>
             <Reveal direction="right">
-              <UptimeMonitorDemo />
+              <CloudInfraDemo />
             </Reveal>
           </div>
           <div className="mt-10 text-center">

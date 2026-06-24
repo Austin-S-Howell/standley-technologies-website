@@ -24,7 +24,7 @@ export const pageMeta = {
   services: {
     title: 'Services',
     description:
-      'Custom software & app development, secure & scalable cloud infrastructure, and IT consulting & managed services — delivered with engineering rigor.',
+      'Custom software & app development, secure & scalable cloud infrastructure, IT consulting & managed services, and private local-LLM setup & integrations — delivered with engineering rigor.',
     path: '/services',
   },
   about: {
@@ -41,11 +41,6 @@ export const pageMeta = {
     title: 'Demos',
     description: `Interactive examples of the software, cloud, and monitoring work ${siteConfig.legalName} builds.`,
     path: '/demos',
-  },
-  book: {
-    title: 'Book a Call',
-    description: `Book a free 30-minute call with ${siteConfig.legalName} to talk through your project.`,
-    path: '/book',
   },
 } as const satisfies Record<string, PageMeta>
 

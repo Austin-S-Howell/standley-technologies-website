@@ -24,12 +24,6 @@ export function CtaBand({
             <Link to="/contact" className={cn(buttonClasses('primary', 'lg'))}>
               Start a Project
             </Link>
-            <Link
-              to="/book"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-neutral-50/30 px-7 text-base font-medium text-neutral-50 transition-colors duration-200 ease-summit hover:bg-neutral-50/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
-            >
-              Book a call
-            </Link>
           </div>
         </Reveal>
       </Container>

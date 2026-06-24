@@ -58,9 +58,12 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <Link to="/book" className={footerLinkClass}>
-                  Book a call
-                </Link>
+                <a
+                  href={`tel:+1${siteConfig.phone.replace(/\D/g, '')}`}
+                  className={cn(footerLinkClass, 'block')}
+                >
+                  {siteConfig.phone}
+                </a>
               </li>
               <li>{siteConfig.serviceArea}</li>
             </ul>

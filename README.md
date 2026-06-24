@@ -7,7 +7,7 @@
 <p align="center"><em>Engineering that reaches the summit.</em></p>
 
 <p align="center">
-  Custom software · Cloud infrastructure &amp; security · IT consulting &amp; managed services
+  Custom software · Cloud infrastructure &amp; security · IT consulting · Private local LLM
 </p>
 
 ---
@@ -16,7 +16,7 @@
 
 This is the marketing website for **Standley Technologies LLC**, a technology services
 company. It's a fast, modern single-page app that introduces the business, shows what we
-build through **live interactive demos**, and makes it easy to get in touch or book a call.
+build through **live interactive demos**, and makes it easy to get in touch.
 
 The design language is built around the **summit / mountain** brand mark — a calm
 **sage-green, gold, and white** palette with subtle motion, and a blurred mountain hero
@@ -27,11 +27,10 @@ backdrop with drifting "shiny" glows.
 | Page | What it does |
 |---|---|
 | **Home** | Centered hero on a mountain backdrop, a live dashboard demo, animated stats, services, and a demos showcase. |
-| **Services** | The three pillars in detail — Custom Software &amp; App Development, Cloud Infrastructure &amp; Security, and IT Consulting &amp; Managed Services. |
-| **Demos** | Four interactive, animated demos of real-world work (see below). |
+| **Services** | The four pillars in detail — Custom Software &amp; App Development, Cloud Infrastructure &amp; Security, IT Consulting &amp; Managed Services, and Private Local LLM Setup &amp; Integrations. |
+| **Demos** | Five interactive, animated demos of real-world work (see below). |
 | **About** | Story, values, what sets the company apart, founder, and service area. |
-| **Contact** | A split-card contact form that opens the visitor's email app, plus FAQ. |
-| **Book** | A built-in calendar + time picker that emails a call request. |
+| **Contact** | A split-card contact form that sends straight to our inbox via Web3Forms, plus FAQ. |
 
 ### Interactive demos
 
@@ -42,13 +41,15 @@ just SVG + React:
 - **Client portal with embedded Power BI** — KPI cards and a mocked Power BI report (slicers, charts, page bar).
 - **Cloud infrastructure** — an architecture topology with live auto-scaling and a security panel (threats blocked, encryption, compliance).
 - **Live monitoring** — uptime, a service status list, a live latency chart, and resource gauges.
+- **Private local LLM** — an on-prem LLM console: a streaming chat answer grounded in RAG sources, tokens/sec and GPU/VRAM gauges, and "0 external calls / data stays on your network" framing.
 
-### Get in touch, no backend
+### Get in touch, no backend of our own
 
-Both the **contact form** and the **booking calendar** open the visitor's email app via
-`mailto:` with the details pre-filled — so they work on Windows, macOS, iOS, and Android
-with **no server, API keys, or third-party services**. Just set the recipient in
-`src/lib/siteConfig.ts`.
+The **contact form** POSTs to **Web3Forms**
+(`https://api.web3forms.com/submit`) and delivers straight to the inbox — no server to run, with
+submitting / success / error states and a `mailto:` fallback on error. The recipient is
+`siteConfig.email`; the Web3Forms access key lives in `siteConfig.web3formsAccessKey` (a public,
+send-only key — rotate it free at [web3forms.com](https://web3forms.com)).
 
 ---
 
@@ -85,14 +86,12 @@ In the repo, set **Settings → Pages → Source = GitHub Actions**. No secrets 
 
 **Custom domain:** `public/CNAME` holds the domain; point **Cloudflare** DNS at GitHub Pages
 (apex `A`/`AAAA` records + `www` `CNAME`), set Cloudflare **SSL/TLS = Full**, and enable
-**Enforce HTTPS** in Pages settings. See §5.8 of [`IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md).
+**Enforce HTTPS** in Pages settings.
 
 ## ⚠️ Before launch — replace placeholders
 
-- **Domain:** currently the placeholder **`standleytech.com`**. If your real domain differs,
-  update it in `public/CNAME`, `public/robots.txt`, `public/sitemap.xml`, `index.html`
-  (canonical + OG tags + JSON-LD), and `src/lib/siteConfig.ts`.
-- **Content:** anything marked `[FILL IN]` in `src/lib/siteConfig.ts` (real email, founder
-  details, founding year, certifications) and a real 1200×630 social card at `public/og-image.png`.
-
-> The full build plan and design system live in [`IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md).
+- **Domain:** **`standleytechnologies.com`** is wired in `public/CNAME`, `public/robots.txt`,
+  `public/sitemap.xml`, `index.html` (canonical + OG tags + JSON-LD), and `src/lib/siteConfig.ts`.
+- **Content (optional):** add `social` links and review the `certifications` list in
+  `src/lib/siteConfig.ts`. The Privacy & Terms pages are generic templates — confirm the Terms
+  governing-law state. The `public/og-image.png` social card is done.

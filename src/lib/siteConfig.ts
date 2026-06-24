@@ -4,16 +4,22 @@
 export const siteConfig = {
   name: 'Standley Technologies LLC',
   legalName: 'Standley Technologies LLC',
-  domain: 'standleytech.com', // [FILL IN] confirm real domain
-  url: 'https://standleytech.com', // [FILL IN] confirm real domain
+  domain: 'standleytechnologies.com',
+  url: 'https://standleytechnologies.com',
   tagline: 'Engineering that reaches the summit.',
   description:
     'Custom software, modern cloud infrastructure, and reliable managed IT for businesses ready to reach the summit.',
 
-  // Contact — [FILL IN] real values before launch
-  email: 'hello@standleytech.com',
-  serviceArea: 'Serving the Midwest and remote clients nationwide.',
-  responseTime: 'We typically respond within one business day.',
+  // Contact
+  email: 'austin@standleytechnologies.com',
+  phone: '(479) 274-8177',
+  serviceArea: 'Serving nationwide, in person and remotely.',
+  responseTime: 'We typically respond within 1–3 business days.',
+
+  // Web3Forms access key — powers the contact form, delivering each
+  // submission straight to `email`. Safe to expose in client code: it's a public,
+  // send-only key. Rotate or get a new one free at https://web3forms.com.
+  web3formsAccessKey: '65185949-5157-4d56-9963-0a69c09c2c91',
 
   social: {
     linkedin: '', // [FILL IN]
@@ -110,6 +116,32 @@ export const siteConfig = {
       outcome:
         'Fewer fires, clearer decisions, and technology that supports your goals instead of getting in the way.',
     },
+    {
+      id: 'local-llm',
+      name: 'Private Local LLM Setup & Integrations',
+      short: 'Self-hosted AI that keeps your data in-house.',
+      promise:
+        'The power of modern AI, running on your own infrastructure — your data never leaves.',
+      whoFor:
+        'Teams who want AI assistants, search, and automation but can’t send sensitive data to third-party APIs — legal, healthcare, finance, or anyone with strict privacy, compliance, or IP concerns.',
+      includes: [
+        'Private LLM deployment (on-prem or in your own private cloud)',
+        'Open-weight model selection & fine-tuning (Llama, Mistral, Qwen)',
+        'Retrieval-augmented generation (RAG) over your own documents',
+        'AI chat assistants, copilots & workflow automation',
+        'Integration with your existing tools, apps & data sources',
+        'GPU sizing, hardware guidance & cost optimization',
+      ],
+      deliverables: [
+        'A private LLM running on infrastructure you control',
+        'A RAG pipeline connected to your knowledge base',
+        'Integrations and a chat/assistant interface for your team',
+        'Guardrails, documentation & team handover',
+      ],
+      tech: ['Ollama', 'Llama / Mistral / Qwen', 'vLLM', 'LangChain', 'Vector DBs', 'Python', 'Docker'],
+      outcome:
+        'A capable AI assistant grounded in your own knowledge — fully private, with no per-token API bills and no data leaving your walls.',
+    },
   ],
 
   process: [
@@ -189,7 +221,7 @@ export const siteConfig = {
 
   // Capability statements (not fabricated metrics) — safe to show day one.
   stats: [
-    { value: '3', label: 'Core service lines' },
+    { value: '4', label: 'Core service lines' },
     { value: 'AWS · Azure · GCP', label: 'Cloud platforms' },
     { value: '24/7', label: 'Managed monitoring' },
     { value: '100%', label: 'Senior engineering' },
@@ -198,7 +230,7 @@ export const siteConfig = {
   faqs: [
     {
       q: 'What services does Standley Technologies LLC offer?',
-      a: 'Three core areas: custom software & app development, cloud & DevOps engineering, and IT consulting & managed services — often combined on a single engagement.',
+      a: 'Four core areas: custom software & app development, cloud infrastructure & security, IT consulting & managed services, and private local LLM setup & integrations — often combined on a single engagement.',
     },
     {
       q: 'Do you work with startups and small businesses?',
@@ -218,11 +250,12 @@ export const siteConfig = {
     },
   ],
 
-  // [FILL IN] Real founder details
+  // Founder. The photo lives in `public/` and is served from the site root.
   founder: {
-    name: '[FILL IN: Founder name]',
+    name: 'Austin Howell',
     role: 'Founder & Principal Engineer',
-    bio: '[FILL IN: A short bio — background, experience, and what drives the work. 2–3 sentences.]',
+    photo: '/austin-headshot.jpg',
+    bio: 'Austin grew up in Northwest Arkansas and graduated from the University of Arkansas in 2022. He founded Standley Technologies to bring senior, end-to-end engineering — software, cloud, and private AI — to businesses that want technology built to last. His passion, knowledge, and people skills make him a powerful tool for all companies.',
   },
 
   // Empty until real client work can be shown. Components render honest
