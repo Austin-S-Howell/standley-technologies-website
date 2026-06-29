@@ -43,14 +43,3 @@ export const pageMeta = {
     path: '/demos',
   },
 } as const satisfies Record<string, PageMeta>
-
-/** Organization JSON-LD, reused site-wide. */
-export const organizationJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: siteConfig.legalName,
-  url: siteConfig.url,
-  logo: `${siteConfig.url}/apple-touch-icon.png`,
-  description: siteConfig.description,
-  sameAs: [siteConfig.social.linkedin, siteConfig.social.github].filter(Boolean),
-}

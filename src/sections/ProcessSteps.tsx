@@ -18,7 +18,7 @@ export function ProcessSteps({ className }: { className?: string }) {
           {siteConfig.process.map((p, i) => (
             <Reveal key={p.step} delay={i * 0.06}>
               <div className="h-full rounded-2xl border border-neutral-200 bg-neutral-0 p-6">
-                <span className="font-display text-sm font-semibold tracking-wider text-gold-600">
+                <span className="font-display text-sm font-semibold tracking-wider text-gold-800">
                   {p.step}
                 </span>
                 <h3 className="mt-2 text-lg font-semibold text-neutral-900">{p.title}</h3>

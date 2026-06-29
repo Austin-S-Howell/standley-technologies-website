@@ -8,11 +8,12 @@ export const siteConfig = {
   url: 'https://standleytechnologies.com',
   tagline: 'Engineering that reaches the summit.',
   description:
-    'Custom software, modern cloud infrastructure, and reliable managed IT for businesses ready to reach the summit.',
+    'Custom software, secure cloud infrastructure, managed IT, and private on-prem AI for businesses ready to reach the summit.',
 
   // Contact
   email: 'austin@standleytechnologies.com',
   phone: '(479) 274-8177',
+  phoneHref: 'tel:+14792748177', // derived from `phone` — used for click-to-call links
   serviceArea: 'Serving nationwide, in person and remotely.',
   responseTime: 'We typically respond within 1–3 business days.',
 

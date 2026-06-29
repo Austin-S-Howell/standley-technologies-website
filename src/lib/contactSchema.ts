@@ -1,5 +1,7 @@
-import { z } from 'zod'
-
+/**
+ * Contact form options and types. Validation lives in the form itself via
+ * react-hook-form's native rules — no schema library needed for five fields.
+ */
 export const SERVICE_OPTIONS = [
   { value: 'software', label: 'Custom Software & App Development' },
   { value: 'cloud-devops', label: 'Cloud Infrastructure & Security' },
@@ -8,25 +10,18 @@ export const SERVICE_OPTIONS = [
   { value: 'other', label: 'Something else' },
 ] as const
 
-export const contactSchema = z.object({
-  name: z.string().min(2, 'Please enter your name'),
-  email: z.string().email('Please enter a valid email so we can reply'),
-  company: z.string().optional(),
-  service: z.enum(['software', 'cloud-devops', 'consulting', 'local-llm', 'other']),
-  message: z.string().min(10, 'Tell us a bit more (at least 10 characters)'),
-  // Honeypot — must stay empty. Bots that fill it fail validation silently.
-  botcheck: z.string().max(0).optional(),
-})
+export type ServiceValue = (typeof SERVICE_OPTIONS)[number]['value']
 
-export type ContactValues = z.infer<typeof contactSchema>
-export type ServiceValue = ContactValues['service']
+export interface ContactValues {
+  name: string
+  email: string
+  company?: string
+  service: ServiceValue
+  message: string
+  /** Honeypot — must stay empty. Bots that fill it are dropped on submit. */
+  botcheck?: string
+}
 
 export function isServiceValue(v: string | null): v is ServiceValue {
-  return (
-    v === 'software' ||
-    v === 'cloud-devops' ||
-    v === 'consulting' ||
-    v === 'local-llm' ||
-    v === 'other'
-  )
+  return SERVICE_OPTIONS.some((o) => o.value === v)
 }

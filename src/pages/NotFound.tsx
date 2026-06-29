@@ -16,11 +16,26 @@ export default function NotFound() {
       <p className="mt-6 font-display text-6xl font-semibold text-summit-700">404</p>
       <h1 className="mt-4 text-2xl font-semibold text-neutral-900">This trail doesn’t exist</h1>
       <p className="mt-3 max-w-md text-neutral-600">
-        The page you’re looking for may have moved. Let’s get you back on the path.
+        The page you’re looking for may have moved. Here are some good places to pick up the trail:
       </p>
-      <Link to="/" className={`mt-8 ${buttonClasses('primary', 'lg')}`}>
-        Back to home
-      </Link>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <Link to="/" className={buttonClasses('primary', 'lg')}>
+          Back to home
+        </Link>
+        <Link to="/services" className={buttonClasses('secondary', 'lg')}>
+          Services
+        </Link>
+        <Link to="/demos" className={buttonClasses('secondary', 'lg')}>
+          Demos
+        </Link>
+      </div>
+      <p className="mt-6 text-sm text-neutral-500">
+        Looking for something specific?{' '}
+        <Link to="/contact" className="font-medium text-summit-700 underline underline-offset-2">
+          Get in touch
+        </Link>
+        .
+      </p>
     </Container>
   )
 }

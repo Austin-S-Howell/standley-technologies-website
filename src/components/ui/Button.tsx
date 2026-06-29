@@ -1,4 +1,3 @@
-import type { ButtonHTMLAttributes } from 'react'
 import { cn } from '@/lib/cn'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost'
@@ -19,20 +18,15 @@ const sizeClasses: Record<ButtonSize, string> = {
   lg: 'h-12 px-7 text-base',
 }
 
-/** Shared button styling — also usable on <Link>/<a> via `className={buttonClasses(...)}`. */
+/**
+ * Shared button styling. We style links/anchors with this far more than actual
+ * <button>s, so this is the single source of truth — used via
+ * `className={buttonClasses(...)}` on <Link>, <a>, and <button> alike.
+ */
 export function buttonClasses(
   variant: ButtonVariant = 'primary',
   size: ButtonSize = 'md',
   className?: string,
 ): string {
   return cn(base, variantClasses[variant], sizeClasses[size], className)
-}
-
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant
-  size?: ButtonSize
-}
-
-export function Button({ variant = 'primary', size = 'md', className, ...props }: ButtonProps) {
-  return <button className={buttonClasses(variant, size, className)} {...props} />
 }

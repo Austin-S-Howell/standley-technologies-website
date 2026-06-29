@@ -1,19 +1,16 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useSearchParams } from 'react-router-dom'
 import { CheckCircle2, Send, ChevronDown, Loader2, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { siteConfig } from '@/lib/siteConfig'
-import {
-  contactSchema,
-  isServiceValue,
-  SERVICE_OPTIONS,
-  type ContactValues,
-} from '@/lib/contactSchema'
+import { isServiceValue, SERVICE_OPTIONS, type ContactValues } from '@/lib/contactSchema'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { buttonClasses } from '@/components/ui/Button'
+
+// Simple, permissive email shape — the real check is whether our reply lands.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function ContactForm() {
   const [params] = useSearchParams()
@@ -26,7 +23,6 @@ export function ContactForm() {
     reset,
     formState: { errors },
   } = useForm<ContactValues>({
-    resolver: zodResolver(contactSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -99,7 +95,7 @@ export function ContactForm() {
               {siteConfig.email}
             </a>
             <a
-              href={`tel:+1${siteConfig.phone.replace(/\D/g, '')}`}
+              href={siteConfig.phoneHref}
               className="font-medium text-summit-700 underline-offset-2 hover:underline"
             >
               {siteConfig.phone}
@@ -138,7 +134,11 @@ export function ContactForm() {
         label="Name"
         autoComplete="name"
         error={errors.name?.message}
-        {...register('name')}
+        {...register('name', {
+          required: 'Please enter your name',
+          minLength: { value: 2, message: 'Please enter your name' },
+          maxLength: { value: 100, message: 'That name is too long' },
+        })}
       />
       <Input
         id="email"
@@ -146,9 +146,21 @@ export function ContactForm() {
         label="Email"
         autoComplete="email"
         error={errors.email?.message}
-        {...register('email')}
+        {...register('email', {
+          required: 'Please enter a valid email so we can reply',
+          pattern: { value: EMAIL_RE, message: 'Please enter a valid email so we can reply' },
+          maxLength: { value: 254, message: 'That email is too long' },
+        })}
       />
-      <Input id="company" label="Company (optional)" autoComplete="organization" {...register('company')} />
+      <Input
+        id="company"
+        label="Company (optional)"
+        autoComplete="organization"
+        error={errors.company?.message}
+        {...register('company', {
+          maxLength: { value: 120, message: 'That company name is too long' },
+        })}
+      />
 
       <div>
         <label htmlFor="service" className="mb-1.5 block text-sm font-medium text-neutral-700">
@@ -179,7 +191,11 @@ export function ContactForm() {
         rows={5}
         placeholder="A few sentences about what you’re trying to build or solve."
         error={errors.message?.message}
-        {...register('message')}
+        {...register('message', {
+          required: 'Tell us a bit more (at least 10 characters)',
+          minLength: { value: 10, message: 'Tell us a bit more (at least 10 characters)' },
+          maxLength: { value: 5000, message: 'Please keep your message under 5000 characters' },
+        })}
       />
 
       {status === 'error' && (

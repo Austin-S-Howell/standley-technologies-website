@@ -26,7 +26,7 @@ const details: { icon: LucideIcon; label: string; value: string; href?: string }
     icon: Phone,
     label: 'Phone',
     value: siteConfig.phone,
-    href: `tel:+1${siteConfig.phone.replace(/\D/g, '')}`,
+    href: siteConfig.phoneHref,
   },
   { icon: MapPin, label: 'Service area', value: siteConfig.serviceArea },
   { icon: Clock, label: 'Response time', value: siteConfig.responseTime },

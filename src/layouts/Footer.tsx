@@ -14,7 +14,7 @@ export function Footer() {
   return (
     <footer className="bg-summit-900 text-neutral-50">
       <RidgeDivider className="text-summit-900" />
-      <Container className="py-14">
+      <Container className="pb-24 pt-14 lg:py-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <LogoWordmark tone="light" />
@@ -59,7 +59,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={`tel:+1${siteConfig.phone.replace(/\D/g, '')}`}
+                  href={siteConfig.phoneHref}
                   className={cn(footerLinkClass, 'block')}
                 >
                   {siteConfig.phone}

@@ -1,4 +1,4 @@
-import logoMark from '@/assets/logo/circle-mark-512.png'
+import logoMark from '@/assets/logo/circle-mark-512.webp'
 import { cn } from '@/lib/cn'
 import { siteConfig } from '@/lib/siteConfig'
 

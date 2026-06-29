@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react'
+import { lazy, type ComponentType } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Check } from 'lucide-react'
 import { cn } from '@/lib/cn'
@@ -11,13 +11,26 @@ import { Parallax } from '@/components/Parallax'
 import { Container } from '@/components/ui/Container'
 import { Eyebrow } from '@/components/ui/Eyebrow'
 import { buttonClasses } from '@/components/ui/Button'
-import { AnalyticsDashboardDemo } from '@/components/demos/AnalyticsDashboardDemo'
-import { PowerBiPortalDemo } from '@/components/demos/PowerBiPortalDemo'
-import { LocalLlmDemo } from '@/components/demos/LocalLlmDemo'
-import { CloudInfraDemo } from '@/components/demos/CloudInfraDemo'
-import { UptimeMonitorDemo } from '@/components/demos/UptimeMonitorDemo'
+import { DeferredDemo } from '@/components/demos/DeferredDemo'
 import { PageHero } from '@/sections/PageHero'
 import { CtaBand } from '@/sections/CtaBand'
+
+// Each demo is code-split and only fetched once it scrolls near view.
+const AnalyticsDashboardDemo = lazy(() =>
+  import('@/components/demos/AnalyticsDashboardDemo').then((m) => ({ default: m.AnalyticsDashboardDemo })),
+)
+const PowerBiPortalDemo = lazy(() =>
+  import('@/components/demos/PowerBiPortalDemo').then((m) => ({ default: m.PowerBiPortalDemo })),
+)
+const LocalLlmDemo = lazy(() =>
+  import('@/components/demos/LocalLlmDemo').then((m) => ({ default: m.LocalLlmDemo })),
+)
+const CloudInfraDemo = lazy(() =>
+  import('@/components/demos/CloudInfraDemo').then((m) => ({ default: m.CloudInfraDemo })),
+)
+const UptimeMonitorDemo = lazy(() =>
+  import('@/components/demos/UptimeMonitorDemo').then((m) => ({ default: m.UptimeMonitorDemo })),
+)
 
 const demos: {
   id: ServiceId
@@ -122,7 +135,7 @@ export default function Work() {
                 </Reveal>
                 <Reveal direction={flipped ? 'left' : 'right'}>
                   <Parallax speed={24}>
-                    <Demo />
+                    <DeferredDemo component={Demo} />
                   </Parallax>
                 </Reveal>
               </div>

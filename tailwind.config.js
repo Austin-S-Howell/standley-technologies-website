@@ -61,9 +61,9 @@ export default {
           800: '#272D32',
           900: '#161A1D',
         },
-        success: { 50: '#E8F4EE', 500: '#3E9E6E' },
+        success: { 50: '#E8F4EE', 500: '#3E9E6E', 700: '#1F7A4D' },
         error: { 50: '#F8E9E8', 500: '#C2453E' },
-        warning: { 500: '#D99A2B' },
+        warning: { 500: '#D99A2B', 700: '#8A6310' },
         info: { 500: '#3B7BA8' },
       },
       fontFamily: {

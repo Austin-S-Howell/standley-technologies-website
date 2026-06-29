@@ -85,7 +85,7 @@ export function LocalLlmDemo({ className }: { className?: string }) {
             </span>
           </div>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-success-50 px-2.5 py-1 text-[11px] font-medium text-success-500">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-success-50 px-2.5 py-1 text-[11px] font-medium text-success-700">
           <Lock className="h-3 w-3" aria-hidden />
           Data stays on your network
         </span>
@@ -104,7 +104,7 @@ export function LocalLlmDemo({ className }: { className?: string }) {
         </div>
         <div className="rounded-lg border border-neutral-200 bg-neutral-0 px-2.5 py-2">
           <div className="text-[10px] uppercase tracking-wide text-neutral-500">External calls</div>
-          <span className="font-display text-base font-semibold text-success-500">0</span>
+          <span className="font-display text-base font-semibold text-success-700">0</span>
           <div className="mt-0.5 text-[10px] text-neutral-400">100% local</div>
         </div>
         <div className="rounded-lg border border-neutral-200 bg-neutral-0 px-2.5 py-2">

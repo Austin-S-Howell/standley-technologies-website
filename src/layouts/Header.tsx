@@ -64,7 +64,7 @@ export function Header() {
           : 'border-b border-transparent bg-transparent',
       )}
     >
-      <Container className="grid h-16 grid-cols-[1fr_auto_1fr] items-center lg:h-20">
+      <Container className="flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
         {/* Left — logo */}
         <Link
           to="/"

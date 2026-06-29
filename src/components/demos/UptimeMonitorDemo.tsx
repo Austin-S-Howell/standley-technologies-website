@@ -79,7 +79,7 @@ export function UptimeMonitorDemo({ className }: { className?: string }) {
             <span className="ml-1 text-[11px] text-neutral-500">uptime · 90d</span>
           </div>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-success-50 px-2.5 py-1 text-[11px] font-medium text-success-500">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-success-50 px-2.5 py-1 text-[11px] font-medium text-success-700">
           <span className={cn('h-1.5 w-1.5 rounded-full bg-success-500', !reduced && 'animate-pulse')} />
           All systems operational
         </span>
@@ -112,7 +112,7 @@ export function UptimeMonitorDemo({ className }: { className?: string }) {
         </div>
         <div className="rounded-lg border border-neutral-200 bg-neutral-0 px-2.5 py-2">
           <div className="text-[10px] uppercase tracking-wide text-neutral-500">Error rate</div>
-          <span className="font-display text-base font-semibold text-success-500">0.02%</span>
+          <span className="font-display text-base font-semibold text-success-700">0.02%</span>
           <div className="mt-0.5 text-[10px] text-neutral-400">within SLO</div>
         </div>
         <div className="rounded-lg border border-neutral-200 bg-neutral-0 px-2.5 py-2">
@@ -137,7 +137,7 @@ export function UptimeMonitorDemo({ className }: { className?: string }) {
             <span
               className={cn(
                 'inline-flex items-center gap-1 text-[10px] font-medium',
-                s.status === 'ok' ? 'text-success-500' : 'text-warning-500',
+                s.status === 'ok' ? 'text-success-700' : 'text-warning-700',
               )}
             >
               <span

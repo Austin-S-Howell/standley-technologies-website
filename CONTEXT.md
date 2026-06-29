@@ -3,7 +3,7 @@
 > A living "what's actually here right now" doc. Pairs with [`README.md`](./README.md)
 > (getting started). Update this as the site evolves.
 
-_Last updated: 2026-06-23._
+_Last updated: 2026-06-28._
 
 ---
 
@@ -67,8 +67,10 @@ No chart libraries, no UI kit — demos/charts are hand-built SVG + CSS.
 - **Type:** Space Grotesk (display/headings, `font-display`) + Inter (body).
 - **Motif:** the **mountain / summit** mark. Used tastefully — `MountainBackdrop` (blurry sage
   hero scene with drifting gold glows), `RidgeDivider`, `PeakTransition`, `SummitLine`.
-- **Logo:** `src/assets/logo/circle-mark-512.png` / `circle-mark-1024.png`. Favicons (`.ico` + PNGs)
-  in `public/` are generated from it.
+- **Logo:** circle mark `src/assets/logo/circle-mark-512.png` / `circle-mark-1024.png` (used in the
+  header/footer via `Logo`); favicons (`.ico` + PNGs) in `public/` are generated from it. The **home
+  hero** uses the full stacked lockup (mark + wordmark) at `public/standley-logo-stacked.png`
+  (background made transparent so it sits on the `MountainBackdrop`).
 - **Voice:** professional, honest, plain-English. No fabricated stats/claims.
 
 ---
@@ -182,6 +184,7 @@ hero, solid on scroll. Focus-trapped `MobileMenu` on small screens.
 - **Email:** **`austin@standleytechnologies.com`** + **phone** `(479) 274-8177` are set (siteConfig + JSON-LD). Founder (Austin Howell) name/photo/bio are filled.
 - **Privacy Policy & Terms of Service** are written (generic templates; worth an attorney glance). Terms uses **Arkansas** governing law — confirm the LLC's registered state.
 - **`public/og-image.png`** is a real 1200×630 branded social-share card (logo + wordmark + tagline on the summit gradient).
+- **Security headers:** apply the edge headers documented in [`docs/security-headers.md`](./docs/security-headers.md) in the Cloudflare dashboard (GitHub Pages can't set HTTP headers). The in-app `referrer` meta is already shipped; the rest (CSP, HSTS, …) must be added at Cloudflare.
 - **Still to fill (optional / non-blocking):** `social.linkedin`/`social.github` (empty → omitted from JSON-LD `sameAs`); `certifications` (3 marked `in-progress`, currently **not rendered** anywhere).
 - **Optional/nice-to-have** (discussed, not built): testimonials/case studies, blog, analytics
   (Cloudflare Web Analytics), a real Lighthouse/axe pass in a browser.
@@ -236,6 +239,19 @@ npm run format
 
 Newest first. Add a one-line entry whenever something notable changes (and bump _Last updated_ at the top).
 
+### 2026-06-28
+- **Mobile header + overflow fixes** — the header was a 3-column grid (`[1fr_auto_1fr]`); on mobile the hidden center nav broke grid auto-placement and pushed the hamburger into the **middle**. Switched the header to `flex justify-between` on mobile (logo left, menu right) and only `lg:grid` for the centered desktop nav. Also killed a **16px horizontal scroll** on `/`, `/services`, `/demos` caused by `Reveal`'s slide-in (`x: ±36`) animations sticking past the viewport — added `overflow-x-clip` to the layout shell (clips the overhang without creating a scroll container, so the sticky header/pillar nav keep working). Audited every route at 320/360/390px → **0px overflow everywhere**.
+- **Per-route head prerender (SEO/social)** — a new `prerender-route-head` Vite plugin (in `vite.config.ts`) emits a static `.html` per route (`services.html`, `about.html`, …), each a copy of the built `index.html` with that page's real `<title>`/description/canonical/OG/Twitter baked in (privacy + terms also get `noindex`). GitHub Pages serves `/services` from `services.html` with no redirect, so crawlers and non-JS link unfurlers (Slack, iMessage, …) see correct per-page metadata before any JS runs. No new deps, no CI change. (Body is still client-rendered; full-body SSG remains a possible future step.)
+- **Demos are lazy-loaded + viewport-gated** — each demo is now its own `React.lazy` chunk, mounted only once it scrolls near view via a new `InView` gate + `DeferredDemo`/`DemoSkeleton`. Cut the `/demos` page chunk from ~18 KB → ~5 KB and stopped off-screen demo timers from running. (#12)
+- **Mobile sticky contact bar** — `MobileContactBar` (call + "Get in touch"), slides up after scrolling, hidden on `/contact`; footer gets bottom clearance on mobile so it's never covered. (#7)
+- **Logos → WebP** — hero stacked logo (85 KB → 28 KB, served via `<picture>` with a PNG fallback + WebP preload) and the header/footer circle mark (49 KB → 26 KB). (#11)
+- **Security headers** — added `<meta name="referrer">` in `index.html`; documented the full edge header set (HSTS, CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, …) for Cloudflare in [`docs/security-headers.md`](./docs/security-headers.md), since GitHub Pages can't emit headers. (#21)
+- **Contact form dropped `zod`** — validation moved to react-hook-form's native rules; removed `zod` + `@hookform/resolvers`, cutting the Contact page chunk ~96 KB → ~40 KB. (#4)
+- **FAQ on Home** — reused the `<Faq>` accordion (5 Qs) above the CTA band. (#9)
+- **A11y contrast** — added `success-700`/`warning-700` tokens + used `gold-800`; darkened demo status text + the `ProcessSteps` step labels to pass WCAG AA. (#13)
+- **Focus restore** — `useFocusTrap` now returns focus to the trigger (e.g. the menu button) when the mobile menu closes. (#20)
+- **Dead-code + sitemap** — deleted unused `Badge`/`StatBlock`/`PeakTransition` components and the never-used `Button` function (kept `buttonClasses`); added `<lastmod>` to every `sitemap.xml` URL. (#17, #22)
+
 ### 2026-06-23
 - **Domain finalized → `standleytechnologies.com`** (replaced the `standleytech.com` placeholder repo-wide: CNAME, robots, sitemap, `index.html` canonical/OG/JSON-LD, `.env.example`, siteConfig). Contact email set to **`austin@standleytechnologies.com`**.
 - **Forms are now real** — the contact form and the book-a-call form **POST to Web3Forms** (delivered straight to the inbox) instead of opening a `mailto:`; both show submitting / success / error states (with a `mailto:` fallback), and booking now collects **name + email**. Key in `siteConfig.web3formsAccessKey`.
@@ -252,6 +268,9 @@ Newest first. Add a one-line entry whenever something notable changes (and bump 
 - **Contact form polish** — removed the consent checkbox; nicer success card (centered, check badge, email + phone links); the Web3Forms subject now includes the sender's name and omits empty fields.
 - **Ship-readiness pass** — ran a final adversarial review (0 blockers) and applied the polish it found: optimized the founder headshot (985 KB PNG → **8 KB** 256² JPG, with `width`/`height` to prevent layout shift), re-exported the og-image as 8-bit (700 KB → **106 KB**), added the 4th pillar to the Services SEO description, switched the Terms→Privacy link to a react-router `<Link>`, and trimmed unused env-var docs (`.env.example` / `vite-env.d.ts`).
 - **Pages deploy is now manual** — `deploy.yml` triggers only on `workflow_dispatch` (Actions tab → Run workflow), not automatically on push to `main`.
+- **Home hero logo** — swapped the circle mark for the official **stacked lockup** (`public/standley-logo-stacked.png`, with the company name); made its background transparent + downscaled to 800px so it sits cleanly on the `MountainBackdrop`.
+- **Mobile checked** — verified all pages at 390px: zero horizontal overflow, all 5 demos render, layouts stack cleanly (no fixes needed).
+- **Audit quick-win batch:** added the 4th pillar (private on-prem AI) to the hero subtitle + `siteConfig.description` + static meta; **preload** the hero logo (LCP) in `index.html`; `role="alert"` on `Input`/`Textarea` errors; input-length **caps** in `contactSchema`; reframed Home stats honestly ("Code you own", "Automated monitoring"); **enriched the Organization JSON-LD** (telephone/founder/areaServed/address) + added a `WebSite` schema and removed the dead `seo.ts` `organizationJsonLd` export; **404 is now a wayfinding page**; deduped `serviceIcons` into `src/lib/serviceIcons.ts` and added `siteConfig.phoneHref` (replacing 5 copy-pasted `tel:` templates).
 
 ### 2026-06-21
 - Added a **scroll-interaction system** (`ScrollProgress`, `Parallax`, directional `Reveal`, `StaggerGroup/Item`) and applied it across every page; `MountainBackdrop` glows + ridges now parallax/fade on scroll.

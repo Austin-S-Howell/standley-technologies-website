@@ -1,10 +1,11 @@
+import { lazy } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Code2, Cloud, Headset, Cpu } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { siteConfig } from '@/lib/siteConfig'
+import { serviceIcons } from '@/lib/serviceIcons'
 import { pageMeta } from '@/lib/seo'
 import { useCountUp } from '@/hooks/useCountUp'
 import { Seo } from '@/components/Seo'
-import { Logo } from '@/components/Logo'
 import { Reveal } from '@/components/Reveal'
 import { Parallax } from '@/components/Parallax'
 import { StaggerGroup, StaggerItem } from '@/components/Stagger'
@@ -14,17 +15,20 @@ import { Eyebrow } from '@/components/ui/Eyebrow'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Card } from '@/components/ui/Card'
 import { buttonClasses } from '@/components/ui/Button'
-import { AnalyticsDashboardDemo } from '@/components/demos/AnalyticsDashboardDemo'
-import { CloudInfraDemo } from '@/components/demos/CloudInfraDemo'
-import { LocalLlmDemo } from '@/components/demos/LocalLlmDemo'
+import { DeferredDemo } from '@/components/demos/DeferredDemo'
+import { Faq } from '@/sections/Faq'
 import { CtaBand } from '@/sections/CtaBand'
 
-const serviceIcons = {
-  software: Code2,
-  'cloud-devops': Cloud,
-  consulting: Headset,
-  'local-llm': Cpu,
-} as const
+// Demos are code-split and viewport-gated so they don't weigh down first paint.
+const AnalyticsDashboardDemo = lazy(() =>
+  import('@/components/demos/AnalyticsDashboardDemo').then((m) => ({ default: m.AnalyticsDashboardDemo })),
+)
+const CloudInfraDemo = lazy(() =>
+  import('@/components/demos/CloudInfraDemo').then((m) => ({ default: m.CloudInfraDemo })),
+)
+const LocalLlmDemo = lazy(() =>
+  import('@/components/demos/LocalLlmDemo').then((m) => ({ default: m.LocalLlmDemo })),
+)
 
 function CountStat({ to, suffix = '', label }: { to: number; suffix?: string; label: string }) {
   const { ref, value } = useCountUp(to)
@@ -62,7 +66,16 @@ export default function Home() {
 
         <Container className="relative">
           <Reveal className="mx-auto max-w-3xl text-center">
-            <Logo className="mx-auto h-24 w-24 drop-shadow-lg sm:h-32 sm:w-32 lg:h-40 lg:w-40" />
+            <picture>
+              <source srcSet="/standley-logo-stacked.webp" type="image/webp" />
+              <img
+                src="/standley-logo-stacked.png"
+                alt="Standley Technologies LLC"
+                width={800}
+                height={506}
+                className="mx-auto h-auto w-60 sm:w-72 lg:w-80"
+              />
+            </picture>
             <div className="mt-6 flex justify-center">
               <Eyebrow>Software · Cloud · Managed IT</Eyebrow>
             </div>
@@ -70,13 +83,16 @@ export default function Home() {
               Engineering that reaches the <span className="text-gold-700">summit</span>.
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg text-neutral-700">
-              Custom software, cloud infrastructure, and managed IT — built to last.
+              Custom software, cloud infrastructure, managed IT, and private on-prem AI — built to last.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link to="/contact" className={buttonClasses('primary', 'lg')}>
                 Start a Project <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
-              <Link to="/demos" className={buttonClasses('secondary', 'lg')}>
+              <Link
+                to="/demos"
+                className={buttonClasses('secondary', 'lg', 'bg-neutral-0 shadow-sm hover:!bg-sage-100 hover:border-sage-600')}
+              >
                 See Live Demos
               </Link>
             </div>
@@ -89,7 +105,7 @@ export default function Home() {
         <Container className="max-w-3xl">
           <Reveal direction="scale">
             <Parallax speed={22}>
-              <AnalyticsDashboardDemo />
+              <DeferredDemo component={AnalyticsDashboardDemo} />
             </Parallax>
           </Reveal>
           <p className="mt-4 text-center text-sm text-neutral-500">
@@ -103,8 +119,8 @@ export default function Home() {
         <Container>
           <div className="grid grid-cols-2 gap-8 text-center sm:grid-cols-4">
             <CountStat to={4} label="Core service lines" />
-            <CountStat to={100} suffix="%" label="Senior engineering" />
-            <TextStat value="24/7" label="Managed monitoring" />
+            <CountStat to={100} suffix="%" label="Code you own" />
+            <TextStat value="24/7" label="Automated monitoring" />
             <TextStat value="3" label="Cloud platforms" />
           </div>
         </Container>
@@ -150,16 +166,31 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <Reveal direction="left">
-              <LocalLlmDemo />
+              <DeferredDemo component={LocalLlmDemo} />
             </Reveal>
             <Reveal direction="right">
-              <CloudInfraDemo />
+              <DeferredDemo component={CloudInfraDemo} />
             </Reveal>
           </div>
           <div className="mt-10 text-center">
             <Link to="/demos" className={buttonClasses('primary', 'lg')}>
               Explore all demos <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-neutral-0 py-20">
+        <Container className="max-w-3xl">
+          <SectionHeading
+            align="center"
+            eyebrow="FAQ"
+            title="Questions, answered"
+            description="The things people ask us most before getting started."
+          />
+          <div className="mt-12">
+            <Faq items={siteConfig.faqs} />
           </div>
         </Container>
       </section>

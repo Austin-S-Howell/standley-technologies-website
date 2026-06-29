@@ -10,12 +10,22 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#163A2B" />
     <meta name="color-scheme" content="light" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Preload the hero logo (the home-page LCP image) so it fetches alongside the JS -->
+    <link
+      rel="preload"
+      as="image"
+      href="/standley-logo-stacked.webp"
+      type="image/webp"
+      fetchpriority="high"
+    />
 
     <!-- Static SEO defaults (per-page tags are updated client-side by react-helmet-async) -->
     <title>Standley Technologies LLC — Custom Software, Cloud &amp; IT Consulting</title>
     <meta
       name="description"
-      content="Standley Technologies LLC builds custom software, modern cloud infrastructure, and reliable managed IT for businesses ready to reach the summit."
+      content="Standley Technologies LLC builds custom software, secure cloud infrastructure, managed IT, and private on-prem AI for businesses ready to reach the summit."
     />
     <link rel="canonical" href="https://standleytechnologies.com/" />
 
@@ -52,8 +62,16 @@
         "url": "https://standleytechnologies.com",
         "logo": "https://standleytechnologies.com/apple-touch-icon.png",
         "image": "https://standleytechnologies.com/og-image.png",
-        "description": "Custom software, cloud infrastructure & security, managed IT, and private local-LLM setup.",
+        "description": "Custom software, secure cloud infrastructure, managed IT, and private on-prem AI.",
         "email": "austin@standleytechnologies.com",
+        "telephone": "+1-479-274-8177",
+        "founder": {
+          "@type": "Person",
+          "name": "Austin Howell",
+          "jobTitle": "Founder & Principal Engineer"
+        },
+        "areaServed": { "@type": "Country", "name": "United States" },
+        "address": { "@type": "PostalAddress", "addressRegion": "AR", "addressCountry": "US" },
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer support",
@@ -61,6 +79,14 @@
           "email": "austin@standleytechnologies.com"
         },
         "sameAs": []
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Standley Technologies LLC",
+        "url": "https://standleytechnologies.com"
       }
     </script>
   </head>

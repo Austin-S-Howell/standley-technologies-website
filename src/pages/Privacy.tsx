@@ -112,7 +112,7 @@ export default function Privacy() {
             <p>
               Questions about this policy or your information? Contact {siteConfig.legalName} at{' '}
               <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> or{' '}
-              <a href={`tel:+1${siteConfig.phone.replace(/\D/g, '')}`}>{siteConfig.phone}</a>.
+              <a href={siteConfig.phoneHref}>{siteConfig.phone}</a>.
             </p>
           </div>
         </Container>
