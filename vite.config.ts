@@ -76,6 +76,12 @@ const prerenderRoutes: PrerenderRoute[] = [
     path: '/contact',
   },
   {
+    file: 'downloads.html',
+    title: fullTitle(pageMeta.downloads.title),
+    description: pageMeta.downloads.description,
+    path: '/downloads',
+  },
+  {
     file: 'privacy.html',
     title: fullTitle('Privacy Policy'),
     description: `Privacy policy for ${siteConfig.legalName}.`,

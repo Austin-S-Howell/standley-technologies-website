@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Menu } from 'lucide-react'
+import { Download, Menu } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { siteConfig } from '@/lib/siteConfig'
 import { useScrollHeader } from '@/hooks/useScrollHeader'
@@ -115,6 +115,18 @@ export function Header() {
 
         {/* Right — actions */}
         <div className="flex items-center justify-self-end gap-2">
+          {/* Icon-only outlined button (mirrors buttonClasses('secondary','sm'),
+              hand-rolled because cn() can't override the size padding). Hidden
+              below sm — like "Get in Touch" — so the nowrap wordmark keeps its
+              320px clearance; the mobile menu carries the Downloads entry. */}
+          <Link
+            to="/downloads"
+            aria-label="Downloads"
+            title="Downloads"
+            className="hidden h-9 w-9 transform-gpu items-center justify-center rounded-xl border border-sage-500 text-summit-800 transition-[transform,background-color] duration-200 ease-summit hover:-translate-y-0.5 hover:bg-sage-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:inline-flex"
+          >
+            <Download className="h-4 w-4" aria-hidden />
+          </Link>
           <Link
             to="/contact"
             className={cn(

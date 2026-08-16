@@ -69,6 +69,8 @@ export default {
       fontFamily: {
         sans: ['Inter Variable', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['Space Grotesk Variable', 'Inter Variable', 'system-ui', 'sans-serif'],
+        // Apollo's serif (enoch-web theme.css --font-serif) — /downloads only.
+        'apollo-serif': ['Georgia', 'Iowan Old Style', 'Source Serif Pro', 'Cambria', 'serif'],
       },
       borderRadius: {
         xl: '0.875rem',
@@ -82,6 +84,22 @@ export default {
         summit: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
       keyframes: {
+        // Apollo brand motion (ported from enoch-web), used on /downloads only.
+        apolloShimmer: {
+          from: { backgroundPosition: '0% 50%' },
+          to: { backgroundPosition: '300% 50%' },
+        },
+        apolloShake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '20%': { transform: 'translateX(-5px)' },
+          '40%': { transform: 'translateX(5px)' },
+          '60%': { transform: 'translateX(-3px)' },
+          '80%': { transform: 'translateX(3px)' },
+        },
+        apolloPop: {
+          from: { transform: 'scale(0.5)', opacity: '0' },
+          to: { transform: 'scale(1)', opacity: '1' },
+        },
         driftA: {
           '0%, 100%': { transform: 'translateX(-50%) translateY(0) scale(1)' },
           '50%': { transform: 'translateX(-50%) translateY(-16px) scale(1.07)' },
@@ -96,6 +114,9 @@ export default {
         },
       },
       animation: {
+        'apollo-shimmer': 'apolloShimmer 9s linear infinite',
+        'apollo-shake': 'apolloShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97)',
+        'apollo-pop': 'apolloPop 0.2s ease-out',
         'drift-a': 'driftA 9s ease-in-out infinite',
         'drift-b': 'driftB 13s ease-in-out infinite',
         'drift-c': 'driftC 11s ease-in-out infinite',

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { X } from 'lucide-react'
+import { Download, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { siteConfig } from '@/lib/siteConfig'
 import { useFocusTrap } from '@/hooks/useFocusTrap'
@@ -90,6 +90,18 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
               {item.label}
             </NavLink>
           ))}
+          <NavLink
+            to="/downloads"
+            className={({ isActive }) =>
+              cn(
+                'flex items-center gap-2 rounded-lg px-3 py-3 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500',
+                isActive ? 'bg-sage-50 text-summit-700' : 'text-neutral-700 hover:bg-sage-100',
+              )
+            }
+          >
+            <Download className="h-4 w-4" aria-hidden />
+            Downloads
+          </NavLink>
         </nav>
 
         <div className="mt-auto p-4">

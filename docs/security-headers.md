@@ -35,7 +35,7 @@ img-src 'self' data:;
 font-src 'self';
 style-src 'self' 'unsafe-inline';
 script-src 'self' 'unsafe-inline';
-connect-src 'self' https://api.web3forms.com;
+connect-src 'self' https://api.web3forms.com https://storage.googleapis.com;
 form-action 'self' https://api.web3forms.com;
 upgrade-insecure-requests
 ```
@@ -44,6 +44,10 @@ Notes:
 
 - `connect-src https://api.web3forms.com` is **required** — drop it and the
   contact form stops working.
+- `connect-src https://storage.googleapis.com` lets the `/downloads` page fetch
+  the Apollo update manifests to show a live "v1.2.4" badge. Dropping it only
+  hides the badge — the download links themselves are plain navigations and
+  are not affected by `connect-src`.
 - `style-src 'unsafe-inline'` is required because React / Framer Motion set
   inline `style` attributes on elements.
 - `script-src 'unsafe-inline'` is included so the inline JSON-LD `<script>`
@@ -88,7 +92,7 @@ export default {
         "font-src 'self'",
         "style-src 'self' 'unsafe-inline'",
         "script-src 'self' 'unsafe-inline'",
-        "connect-src 'self' https://api.web3forms.com",
+        "connect-src 'self' https://api.web3forms.com https://storage.googleapis.com",
         "form-action 'self' https://api.web3forms.com",
         'upgrade-insecure-requests',
       ].join('; '),

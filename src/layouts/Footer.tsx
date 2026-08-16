@@ -46,6 +46,11 @@ export function Footer() {
                     </Link>
                   </li>
                 ))}
+              <li>
+                <Link to="/downloads" className={footerLinkClass}>
+                  Downloads
+                </Link>
+              </li>
             </ul>
           </div>
 

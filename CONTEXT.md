@@ -3,7 +3,7 @@
 > A living "what's actually here right now" doc. Pairs with [`README.md`](./README.md)
 > (getting started). Update this as the site evolves.
 
-_Last updated: 2026-06-28._
+_Last updated: 2026-08-15._
 
 ---
 
@@ -121,11 +121,14 @@ vite.config.ts                 # base:'/', react, tsconfig-paths, spa-404-fallba
 | `/services` | `pages/Services.tsx` | Sticky pillar nav + 4 detailed pillars + process + CTA; Service JSON-LD |
 | `/demos` | `pages/Work.tsx` | The 5 interactive demos |
 | `/about` | `pages/About.tsx` | Compact card grid: intro, founder card + values/why-us, service area |
+| `/downloads` | `pages/Downloads.tsx` | Apollo desktop app, styled as **Apollo** (not the site brand): centered glass card, star mark, access-code gate → Windows/macOS gradient buttons (Apple/Microsoft logos, live version); SoftwareApplication JSON-LD |
 | `/contact` | `pages/Contact.tsx` | Split card (dark info panel + form) + FAQ (FAQPage JSON-LD) |
 | `/privacy`, `/terms` | placeholder legal pages (noindex) |
 | `*` | `pages/NotFound.tsx` | 404 |
 
-**Nav** (centered pill in the header): Home · Services · Demos · About · Contact.
+**Nav** (centered pill in the header): Home · Services · Demos · About · Contact. The header
+also has an **outlined download-icon button** → `/downloads` (mirrored in the mobile menu and
+the footer's Company column — deliberately *not* in `siteConfig.nav`, so the pill nav stays 5 items).
 CTAs across the site (the CTA band on every page, the footer) point to **Contact** — the single intake.
 **Achievements page was removed** (was at `/achievements`); the **book-a-call calendar was removed** in favor of the contact form.
 
@@ -238,6 +241,40 @@ npm run format
 ## 13. Changelog
 
 Newest first. Add a one-line entry whenever something notable changes (and bump _Last updated_ at the top).
+
+### 2026-08-15
+- **`/downloads` page — Apollo desktop app** (`pages/Downloads.tsx`), **styled as Apollo, not as
+  this site** (owner's call): Apollo's palette (ink `#0F172A` / navy `#1D3A6E` / accent `#60A5FA`
+  — hex literals on purpose, don't "fix" them to sage/summit/gold), glass card with the blue
+  hairline, gradient-clipped wordmark with an original mark to its right (`ApolloLogo` in
+  `components/BrandIcons.tsx` — "the view down the nave": three nested diamond truss frames
+  receding upward toward light, ink→navy→accent with a light-blue spark at the heart; Fay
+  Jones/Thorncrown-inspired per the owner's brief, deliberately not a letterform — owner
+  rejected star/orbit/sun/lyre/gable-"A"), serif-italic tagline, deliberately minimal copy. Downloads are behind a **mock access-code gate** —
+  `DOWNLOAD_ACCESS_CODE` (`STANDLEYAPOLLO2026`) in `src/lib/downloads.ts`, remembered per tab in
+  sessionStorage. A courtesy gate only: the code + URLs ship in the public bundle (real gating
+  needs a backend/signed URLs). Unlocked state shows two gradient buttons with the
+  Apple/Microsoft logos, OS support lines (Win 10/11 64-bit; macOS 11+ universal — pinned by the
+  app's Electron 37 runtime) and a live version number fetched from the public update manifests
+  (`latest*.yml`) — decorative-only, omitted if the fetch fails (offline / bucket CORS unset /
+  CSP). Links live in **`src/lib/downloads.ts`** and point at the stable-name installers
+  (`Apollo-Setup.exe` / `Apollo.dmg`) in the public GCS bucket
+  `howell-enoch-downloads/enoch-desktop/`, which the Howell-Technologies-Portal
+  `release-apollo-desktop.yml` workflow refreshes every release — **no site deploy needed when a
+  new version ships**. Wired everywhere a page needs: lazy route, `pageMeta.downloads`,
+  prerendered `downloads.html`, `sitemap.xml`, SoftwareApplication JSON-LD (no `downloadUrl` —
+  gated links aren't advertised to crawlers). The wordmark is a true `.enoch-wordmark` port —
+  Inter 800/-0.025em via `font-sans` (which also defeats the site's global Space-Grotesk-on-h1
+  rule), 5-stop shimmer gradient + blue glow; `apollo-*` keyframes and the `font-apollo-serif`
+  tagline stack live in `tailwind.config.js`. Chips carry the product catchphrase (Local AI ·
+  Security first · Your data, your control). The gate's submit is an icon-only lock button:
+  right code → lock swings open → checkmark → downloads swap in; wrong code → shake + red border.
+- **Header download button** — outlined icon-only button (lucide `Download`) next to "Get in
+  Touch", all breakpoints; matching "Downloads" entries added to the mobile menu (with icon) and
+  the footer Company column. Pill nav unchanged.
+- **CSP doc updated** — `docs/security-headers.md` `connect-src` now includes
+  `https://storage.googleapis.com` (only needed for the live version badge; the download links
+  are plain navigations and work without it).
 
 ### 2026-06-28
 - **Mobile header + overflow fixes** — the header was a 3-column grid (`[1fr_auto_1fr]`); on mobile the hidden center nav broke grid auto-placement and pushed the hamburger into the **middle**. Switched the header to `flex justify-between` on mobile (logo left, menu right) and only `lg:grid` for the centered desktop nav. Also killed a **16px horizontal scroll** on `/`, `/services`, `/demos` caused by `Reveal`'s slide-in (`x: ±36`) animations sticking past the viewport — added `overflow-x-clip` to the layout shell (clips the overhang without creating a scroll container, so the sticky header/pillar nav keep working). Audited every route at 320/360/390px → **0px overflow everywhere**.

@@ -42,4 +42,10 @@ export const pageMeta = {
     description: `Interactive examples of the software, cloud, and monitoring work ${siteConfig.legalName} builds.`,
     path: '/demos',
   },
+  downloads: {
+    title: 'Download Apollo',
+    description:
+      'Download Apollo — your intelligent workspace — for Windows 10/11 and macOS 11+.',
+    path: '/downloads',
+  },
 } as const satisfies Record<string, PageMeta>
