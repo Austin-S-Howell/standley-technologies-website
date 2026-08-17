@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Download, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
@@ -34,7 +35,10 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
     }
   }, [open, onClose])
 
-  return (
+  // Portaled to <body>: the scrolled header's backdrop-blur makes the header the
+  // containing block for fixed descendants, which would size this overlay to the
+  // header bar instead of the viewport.
+  return createPortal(
     <div
       className={cn(
         'fixed inset-0 z-50 lg:hidden',
@@ -110,6 +114,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
           </Link>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
