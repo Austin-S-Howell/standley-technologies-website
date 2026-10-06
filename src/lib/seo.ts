@@ -4,6 +4,9 @@ export interface PageMeta {
   title: string
   description: string
   path: string
+  /** Site-relative social card (1200×630) replacing the default og-image. */
+  image?: string
+  imageAlt?: string
 }
 
 export function fullTitle(title: string): string {
@@ -41,6 +44,14 @@ export const pageMeta = {
     title: 'Demos',
     description: `Interactive examples of the software, cloud, and monitoring work ${siteConfig.legalName} builds.`,
     path: '/demos',
+  },
+  apollo: {
+    title: 'Apollo: Your Intelligent Workspace',
+    description:
+      'Apollo is an AI workspace that researches, designs, writes and tests code, and automates routine work — on the model you choose. Coming soon. Watch the launch film.',
+    path: '/apollo',
+    image: '/media/apollo/apollo-og.jpg',
+    imageAlt: 'Apollo — Your Data, Your AI, Your Assistant.',
   },
   downloads: {
     title: 'Download Apollo',

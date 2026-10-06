@@ -45,6 +45,9 @@ interface PrerenderRoute {
   description: string
   path: string
   noindex?: boolean
+  /** Site-relative 1200×630 social card replacing the default og-image. */
+  image?: string
+  imageAlt?: string
 }
 
 const HOME_TITLE = `${siteConfig.legalName} — Custom Software, Cloud & IT Consulting`
@@ -76,6 +79,14 @@ const prerenderRoutes: PrerenderRoute[] = [
     path: '/contact',
   },
   {
+    file: 'apollo.html',
+    title: fullTitle(pageMeta.apollo.title),
+    description: pageMeta.apollo.description,
+    path: '/apollo',
+    image: pageMeta.apollo.image,
+    imageAlt: pageMeta.apollo.imageAlt,
+  },
+  {
     file: 'downloads.html',
     title: fullTitle(pageMeta.downloads.title),
     description: pageMeta.downloads.description,
@@ -104,17 +115,26 @@ const escText = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').re
 function applyHead(template: string, r: PrerenderRoute): string {
   const url = canonical(r.path)
   // Drop the generic per-page tags from the template; keep the shared ones
-  // (og:image, og:type, twitter:card, JSON-LD, …).
-  const stripped = template
+  // (og:image, og:type, twitter:card, JSON-LD, …) — unless the route brings
+  // its own social card, in which case the image + alt tags go too (the
+  // og:image:width/height stay: every card is 1200×630).
+  let stripped = template
     .replace(/\s*<title>[\s\S]*?<\/title>/i, '')
     .replace(/\s*<meta[^>]*\sname=["']description["'][^>]*>/i, '')
     .replace(/\s*<link[^>]*\srel=["']canonical["'][^>]*>/i, '')
     .replace(/\s*<meta[^>]*\sproperty=["']og:(?:title|description|url)["'][^>]*>/gi, '')
     .replace(/\s*<meta[^>]*\sname=["']twitter:(?:title|description)["'][^>]*>/gi, '')
+  if (r.image) {
+    stripped = stripped
+      .replace(/\s*<meta[^>]*\sproperty=["']og:image(?::alt)?["'][^>]*>/gi, '')
+      .replace(/\s*<meta[^>]*\sname=["']twitter:image(?::alt)?["'][^>]*>/gi, '')
+  }
 
   const t = escAttr(r.title)
   const d = escAttr(r.description)
   const u = escAttr(url)
+  const img = r.image ? escAttr(`${siteConfig.url}${r.image}`) : ''
+  const imgAlt = escAttr(r.imageAlt ?? r.title)
   const tags = [
     `<title>${escText(r.title)}</title>`,
     `<meta name="description" content="${d}" />`,
@@ -124,6 +144,14 @@ function applyHead(template: string, r: PrerenderRoute): string {
     `<meta property="og:url" content="${u}" />`,
     `<meta name="twitter:title" content="${t}" />`,
     `<meta name="twitter:description" content="${d}" />`,
+    ...(r.image
+      ? [
+          `<meta property="og:image" content="${img}" />`,
+          `<meta property="og:image:alt" content="${imgAlt}" />`,
+          `<meta name="twitter:image" content="${img}" />`,
+          `<meta name="twitter:image:alt" content="${imgAlt}" />`,
+        ]
+      : []),
     ...(r.noindex ? ['<meta name="robots" content="noindex" />'] : []),
   ].join('\n    ')
 

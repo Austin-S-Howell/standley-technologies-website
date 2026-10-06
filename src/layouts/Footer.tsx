@@ -15,7 +15,11 @@ export function Footer() {
     <footer className="bg-summit-900 text-neutral-50">
       <RidgeDivider className="text-summit-900" />
       <Container className="pb-24 pt-14 lg:py-14">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        {/* Four columns from lg, but the brand and contact columns never go
+            narrower than their content: the wordmark and the email address
+            can't wrap, and equal quarters (~210px at 1024) are too narrow for
+            them. With room to spare the columns are near-equal as before. */}
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[minmax(min-content,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(min-content,1fr)]">
           <div className="lg:col-span-1">
             <LogoWordmark tone="light" />
             <p className="mt-4 max-w-xs text-sm text-sage-300">{siteConfig.tagline}</p>

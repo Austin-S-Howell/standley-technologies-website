@@ -3,7 +3,7 @@
 > A living "what's actually here right now" doc. Pairs with [`README.md`](./README.md)
 > (getting started). Update this as the site evolves.
 
-_Last updated: 2026-08-15._
+_Last updated: 2026-10-06._
 
 ---
 
@@ -63,6 +63,8 @@ No chart libraries, no UI kit — demos/charts are hand-built SVG + CSS.
   - `gold` — premium accent (`gold-500` CTAs; use sparingly; `gold-700`+ for readable gold text)
   - `neutral` — slate-tinted greys (`neutral-0` = white … `neutral-900` headings)
   - semantic: `success`, `error`, `warning`, `info`
+  - `apollo` — the Apollo product sub-brand (night-navy ground, glass panels, blue → violet
+    accent, sampled from the Apollo launch film). **`/apollo` only** — not a site color.
   - Functional CSS vars + reduced-motion guard live in `src/styles/index.css`
 - **Type:** Space Grotesk (display/headings, `font-display`) + Inter (body).
 - **Motif:** the **mountain / summit** mark. Used tastefully — `MountainBackdrop` (blurry sage
@@ -93,11 +95,14 @@ src/
 │  ├─ ScrollProgress.tsx    # top progress bar
 │  ├─ MountainBackdrop.tsx  # hero background (parallax + drifting glows)
 │  ├─ SummitLine/RidgeDivider/PeakTransition.tsx   # motif SVGs
+│  ├─ BrandIcons.tsx        # Apple/Microsoft marks, ApolloLogo (light/dark tone), ApolloAppIcon
+│  ├─ apollo/               # /apollo parts: ApolloFilm (player + chapter timeline), LoopClip
 │  └─ demos/                # the interactive demos (see §7)
 ├─ hooks/                   # useScrollHeader, useFocusTrap, useReducedMotionPref, useCountUp, useLiveSeries
 ├─ layouts/                 # RootLayout, Header (centered pill nav), Footer, MobileMenu
 ├─ lib/
 │  ├─ siteConfig.ts         # ★ single source of editable content (see §8)
+│  ├─ apollo.ts             # /apollo content: film, chapters + features, integrations, platforms
 │  ├─ seo.ts                # pageMeta + canonical/title helpers + Organization JSON-LD
 │  ├─ contactSchema.ts      # zod schema + service options for the contact form
 │  ├─ motion.ts             # shared Framer variants
@@ -107,6 +112,7 @@ src/
 └─ styles/index.css         # Tailwind + tokens + reduced-motion guard
 
 public/   # CNAME, robots.txt, sitemap.xml, site.webmanifest, favicon.ico + icon PNGs, og-image.png
+          # media/apollo/ — launch film (1080p + 720p), chapter loops + posters, share card
 .github/workflows/deploy.yml   # GitHub Pages deploy
 vite.config.ts                 # base:'/', react, tsconfig-paths, spa-404-fallback, image-optimizer
 ```
@@ -120,15 +126,20 @@ vite.config.ts                 # base:'/', react, tsconfig-paths, spa-404-fallba
 | `/` | `pages/Home.tsx` | Centered hero on `MountainBackdrop`, big logo, floating dashboard demo, stats, services, demos showcase |
 | `/services` | `pages/Services.tsx` | Sticky pillar nav + 4 detailed pillars + process + CTA; Service JSON-LD |
 | `/demos` | `pages/Work.tsx` | The 5 interactive demos |
+| `/apollo` | `pages/Apollo.tsx` | Apollo product page, styled as **Apollo** (the launch film's night-navy look, not the site brand): hero + the **launch film** with a chapter timeline, the film's opening as a statement, the 7 feature chapters (Ask · Design · Code · Bots · Together · Admin · Automate) each with a muted looping clip and a "Watch this chapter" jump, integrations / models / platforms, and a **Coming soon** panel. **Informational only — no download links.** VideoObject JSON-LD + its own social card |
 | `/about` | `pages/About.tsx` | Compact card grid: intro, founder card + values/why-us, service area |
 | `/downloads` | `pages/Downloads.tsx` | Apollo desktop app, styled as **Apollo** (not the site brand): centered glass card, star mark, access-code gate → Windows/macOS gradient buttons (Apple/Microsoft logos, live version); SoftwareApplication JSON-LD |
 | `/contact` | `pages/Contact.tsx` | Split card (dark info panel + form) + FAQ (FAQPage JSON-LD) |
 | `/privacy`, `/terms` | placeholder legal pages (noindex) |
 | `*` | `pages/NotFound.tsx` | 404 |
 
-**Nav** (centered pill in the header): Home · Services · Demos · About · Contact. The header
-also has an **outlined download-icon button** → `/downloads` (mirrored in the mobile menu and
-the footer's Company column — deliberately *not* in `siteConfig.nav`, so the pill nav stays 5 items).
+**Nav** (centered pill in the header): Home · Services · Demos · Apollo · About · Contact. With six
+links, the link padding drops to `px-2` below `xl` so the pill clears the wordmark at 1024px. On
+`/apollo` the header goes light-on-dark (`useDarkRoute()` in `hooks/useDarkRoute.ts`, which lists
+the dark pages): light text while transparent, a dark glass bar once scrolled — and the mobile
+contact bar goes dark there too. The header also has an **outlined download-icon
+button** → `/downloads` (mirrored in the mobile menu and the footer's Company column —
+deliberately *not* in `siteConfig.nav`).
 CTAs across the site (the CTA band on every page, the footer) point to **Contact** — the single intake.
 **Achievements page was removed** (was at `/achievements`); the **book-a-call calendar was removed** in favor of the contact form.
 
@@ -152,6 +163,34 @@ and `useLiveSeries` (interval random-walk, frozen under reduced-motion).
 3. **CloudInfraDemo** — cloud infra: architecture topology with live auto-scaling + a security panel (threats blocked, encryption, compliance) → security & scalability.
 4. **UptimeMonitorDemo** — monitoring: uptime, service status list (one "Degraded"), live latency chart, CPU/Mem/Disk gauges, events feed.
 5. **LocalLlmDemo** — private/on-prem LLM console: a streaming chat answer grounded in RAG sources, tokens/sec + GPU/VRAM gauges, and "0 external calls / data stays on your network" framing.
+
+### Apollo page media (`pages/Apollo.tsx`, `components/apollo/`, `public/media/apollo/`)
+- **The film** (`ApolloFilm`): the 3:30 launch film, silent (no audio track). It **autoplays**
+  (muted) once ≥50% of it is on screen — so it opens on "What is Apollo?" instead of starting
+  unseen while the hero is being read — pauses when scrolled below 20% visible on the way out,
+  and resumes on the way back. A visitor's pause, or reaching the end, sticks (no auto-resume /
+  auto-replay). Same opt-out as the loops: Save-Data only (`lib/saveData.ts`). Nothing
+  downloads before it's on screen: the source is set when it first scrolls into view —
+  `apollo-launch-720p.mp4` (~8 MB) on phones, `apollo-launch-1080p.mp4` (~20 MB) otherwise —
+  and streams as it plays. Native controls take over once playing. The chapter timeline under
+  it seeks and fills as it plays; chapter starts live in `filmChapters` (`lib/apollo.ts`), and
+  every chapter section's "Watch this chapter" button scrolls back up and plays from there.
+- **Chapter loops** (`LoopClip`): 7–13s muted cuts of each chapter's key scene. Mounted only
+  near the viewport, autoplay while ≥40% visible and pause when scrolled away, always have a
+  pause/play toggle (WCAG 2.2.2) whose pause sticks. They autoplay **even under
+  prefers-reduced-motion** — owner's call, a deliberate exception to the reduced-motion rule
+  in §12 (they're the product demo, not decoration). Only Save-Data skips autoplay (poster
+  frame until play is pressed).
+- **Re-encoding** (from the 1920×1080 master, ffmpeg with libx264): film = `-an -c:v libx264
+  -preset slow -tune animation -x264-params aq-mode=3 -pix_fmt yuv420p -movflags +faststart
+  -crf 23 -g 120 -force_key_frames 15.5,40.5,64.5,96.5,114,131.5,155,185` (720p: add
+  `-vf scale=1280:720:flags=lanczos`, `-crf 24`). Loops: same settings at 1280×720, `-crf 24
+  -g 60`, with a 0.35s fade in/out. Posters: one frame → `-c:v libwebp -quality 80`. Share card:
+  the end card, `crop=1920:1008:0:36,scale=1200:630`. Keep the keyframes in step with
+  `filmChapters` if the film is re-cut.
+- Media lives under `public/media/`, **not** `public/apollo/` — a folder named like the route
+  would make GitHub Pages redirect `/apollo` → `/apollo/` instead of serving `apollo.html`.
+- Self-hosted, so the CSP needs no change (`default-src 'self'` covers media).
 
 ### Scroll interactions (the "cool" layer)
 Reusable, reduced-motion-safe primitives, applied across every page:
@@ -241,6 +280,45 @@ npm run format
 ## 13. Changelog
 
 Newest first. Add a one-line entry whenever something notable changes (and bump _Last updated_ at the top).
+
+### 2026-10-06
+- **`/apollo` — Apollo product page** (`pages/Apollo.tsx`), built around the Apollo launch film
+  and styled as Apollo (owner's call, like `/downloads`): night-navy ground, glass panels,
+  blue → violet accent — the new `apollo` Tailwind color family, sampled from the film. Hero
+  ("Coming soon" badge, app icon, shimmering wordmark, "Your data. Your AI. Your assistant.")
+  → the film with a chapter timeline → the film's "Not another chatbot…" opening as a
+  statement → 7 feature chapters with sticky looping clips → integrations / your models, your
+  servers / wherever you work → a **Coming soon** panel. **Informational only, no download
+  links** (owner's call); the CTA is Contact. All copy in `lib/apollo.ts`, scene-by-scene from
+  the film — keep claims to what the film shows.
+- **Launch film for the web** — the 437 MB master re-encoded to a 20 MB 1080p + 8 MB 720p cut
+  (H.264, faststart, keyframes on chapter starts) plus seven chapter loops (0.2–0.9 MB each),
+  WebP posters and a 1200×630 share card in `public/media/apollo/` (~31 MB total). See §7.
+- **Wiring:** lazy route, "Apollo" in `siteConfig.nav` (so header pill, mobile menu and footer),
+  `pageMeta.apollo`, prerendered `apollo.html`, `sitemap.xml`, VideoObject JSON-LD.
+- **Per-page social cards** — `<Seo>` and the `prerender-route-head` plugin take an optional
+  `image`/`imageAlt`; `/apollo` uses the film's end card instead of the default `og-image.png`.
+- **Header:** light-on-dark mode for dark pages (`DARK_ROUTES`, currently `/apollo`); nav link
+  padding is `px-2` below `xl` so six links clear the wordmark at 1024px.
+- **`ApolloLogo` got a `tone="dark"`** (the film's app-icon palette) and a new `ApolloAppIcon`
+  (rounded night-navy tile) in `BrandIcons.tsx`. `/downloads` is unchanged.
+- **Chapter loops autoplay for everyone** as each section scrolls into view, including visitors
+  with reduced motion on (owner's request); Save-Data is the only opt-out.
+- **The launch film autoplays too** (owner's request) — muted, once half of it is on screen;
+  pauses when scrolled away and resumes on return, but never overrides a visitor's pause or
+  replays itself after the end. Save-Data is the only opt-out (shared `lib/saveData.ts`).
+- **Mobile pass on `/apollo`** (audited at 320 / 375 / 390 / 430 / 768): 0px horizontal
+  overflow everywhere; hero buttons stack full-width on phones; tagline line-balanced; tighter
+  mobile spacing (~700px shorter scroll); loop pause/play is a 44px target below `lg`; the
+  film's play button sits below the poster title at every size.
+- **`MobileContactBar`** goes dark on dark pages (via `useDarkRoute`), and its labels no longer
+  wrap at 320px (the arrow drops below 360px) — that last fix applies site-wide.
+- **Footer overlap fixed (site-wide, 1024–~1180px)** — the four equal `lg` columns (~210px at
+  1024) were narrower than the wordmark (267px) and the email (227px), so "Standley Technologies
+  LLC" ran into the Services heading and the email overhung the content edge. The brand and
+  contact columns are now `minmax(min-content, 1fr)` (near-equal as before when there's room),
+  and `LogoWordmark`'s mark is `max-w-none` so grids measure its real width — under preflight's
+  `img { max-width: 100% }` it counted as 0px. Verified 320–1920px: no spill, no overflow.
 
 ### 2026-08-15
 - **`/downloads` page — Apollo desktop app** (`pages/Downloads.tsx`), **styled as Apollo, not as

@@ -27,7 +27,10 @@ export function LogoWordmark({
 }) {
   return (
     <span className={cn('inline-flex items-center gap-2.5', className)}>
-      <Logo className="h-9 w-9" alt="" />
+      {/* max-w-none: under the preflight's `img { max-width: 100% }` the mark
+          counts as 0px wide when a grid sizes a column to its content, so the
+          lockup would claim 36px less room than it actually takes. */}
+      <Logo className="h-9 w-9 max-w-none" alt="" />
       <span
         className={cn(
           'whitespace-nowrap font-display text-base font-semibold tracking-tight sm:text-lg',

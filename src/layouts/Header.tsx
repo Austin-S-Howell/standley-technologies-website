@@ -4,6 +4,7 @@ import { Download, Menu } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { siteConfig } from '@/lib/siteConfig'
 import { useScrollHeader } from '@/hooks/useScrollHeader'
+import { useDarkRoute } from '@/hooks/useDarkRoute'
 import { LogoWordmark } from '@/components/Logo'
 import { buttonClasses } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
@@ -16,6 +17,8 @@ export function Header() {
   const scrolled = useScrollHeader()
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
+  // Light-on-dark on full-bleed dark pages (the Apollo page).
+  const dark = useDarkRoute()
 
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([])
   const [pill, setPill] = useState<Pill>(HIDDEN)
@@ -59,9 +62,11 @@ export function Header() {
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-summit',
-        scrolled
-          ? 'border-b border-neutral-200 bg-neutral-0/85 backdrop-blur-md'
-          : 'border-b border-transparent bg-transparent',
+        !scrolled
+          ? 'border-b border-transparent bg-transparent'
+          : dark
+            ? 'border-b border-white/10 bg-apollo-night/80 backdrop-blur-md'
+            : 'border-b border-neutral-200 bg-neutral-0/85 backdrop-blur-md',
       )}
     >
       <Container className="flex h-16 items-center justify-between lg:grid lg:h-20 lg:grid-cols-[1fr_auto_1fr]">
@@ -70,19 +75,25 @@ export function Header() {
           to="/"
           className="justify-self-start rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500"
         >
-          <LogoWordmark />
+          <LogoWordmark tone={dark ? 'light' : 'dark'} />
         </Link>
 
         {/* Center — interactive pill nav */}
         <nav aria-label="Primary" className="hidden lg:block">
           <div
             onMouseLeave={rest}
-            className="relative flex items-center gap-0.5 rounded-full border border-neutral-200/60 bg-neutral-0/50 p-1 backdrop-blur-sm"
+            className={cn(
+              'relative flex items-center gap-0.5 rounded-full border p-1 backdrop-blur-sm',
+              dark ? 'border-white/10 bg-white/[0.04]' : 'border-neutral-200/60 bg-neutral-0/50',
+            )}
           >
             {/* Sliding highlight */}
             <span
               aria-hidden
-              className="pointer-events-none absolute rounded-full bg-sage-100 transition-all duration-300 ease-summit"
+              className={cn(
+                'pointer-events-none absolute rounded-full transition-all duration-300 ease-summit',
+                dark ? 'bg-white/10' : 'bg-sage-100',
+              )}
               style={{
                 left: pill.left,
                 top: pill.top,
@@ -102,8 +113,15 @@ export function Header() {
                 onMouseEnter={() => moveTo(i)}
                 className={({ isActive }) =>
                   cn(
-                    'relative z-10 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500',
-                    isActive ? 'text-summit-700' : 'text-neutral-600 hover:text-neutral-900',
+                    // px-2 until xl: six links at full padding crowd the wordmark at 1024px.
+                    'relative z-10 rounded-full px-2 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 xl:px-3.5',
+                    dark
+                      ? isActive
+                        ? 'text-neutral-0'
+                        : 'text-apollo-muted hover:text-neutral-0'
+                      : isActive
+                        ? 'text-summit-700'
+                        : 'text-neutral-600 hover:text-neutral-900',
                   )
                 }
               >
@@ -123,7 +141,12 @@ export function Header() {
             to="/downloads"
             aria-label="Downloads"
             title="Downloads"
-            className="hidden h-9 w-9 transform-gpu items-center justify-center rounded-xl border border-sage-500 text-summit-800 transition-[transform,background-color] duration-200 ease-summit hover:-translate-y-0.5 hover:bg-sage-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:inline-flex"
+            className={cn(
+              'hidden h-9 w-9 transform-gpu items-center justify-center rounded-xl border transition-[transform,background-color] duration-200 ease-summit hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 sm:inline-flex',
+              dark
+                ? 'border-white/20 text-neutral-0 hover:bg-white/10 focus-visible:ring-offset-apollo-night'
+                : 'border-sage-500 text-summit-800 hover:bg-sage-50',
+            )}
           >
             <Download className="h-4 w-4" aria-hidden />
           </Link>
@@ -141,7 +164,10 @@ export function Header() {
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={menuOpen}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-neutral-700 hover:bg-sage-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 lg:hidden"
+            className={cn(
+              'inline-flex h-10 w-10 items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 lg:hidden',
+              dark ? 'text-neutral-0 hover:bg-white/10' : 'text-neutral-700 hover:bg-sage-100',
+            )}
           >
             <Menu className="h-5 w-5" aria-hidden />
           </button>

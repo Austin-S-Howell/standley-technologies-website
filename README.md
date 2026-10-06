@@ -29,6 +29,7 @@ backdrop with drifting "shiny" glows.
 | **Home** | Centered hero on a mountain backdrop, a live dashboard demo, animated stats, services, and a demos showcase. |
 | **Services** | The four pillars in detail — Custom Software &amp; App Development, Cloud Infrastructure &amp; Security, IT Consulting &amp; Managed Services, and Private Local LLM Setup &amp; Integrations. |
 | **Demos** | Five interactive, animated demos of real-world work (see below). |
+| **Apollo** | The Apollo product page — the launch film with a chapter timeline, every feature chapter with a looping clip, and a "Coming soon" message (no downloads yet). |
 | **About** | Story, values, what sets the company apart, founder, and service area. |
 | **Contact** | A split-card contact form that sends straight to our inbox via Web3Forms, plus FAQ. |
 

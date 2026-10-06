@@ -7,6 +7,7 @@ const Home = lazy(() => import('@/pages/Home'))
 const Services = lazy(() => import('@/pages/Services'))
 const Work = lazy(() => import('@/pages/Work'))
 const About = lazy(() => import('@/pages/About'))
+const Apollo = lazy(() => import('@/pages/Apollo'))
 const Downloads = lazy(() => import('@/pages/Downloads'))
 const Contact = lazy(() => import('@/pages/Contact'))
 const Privacy = lazy(() => import('@/pages/Privacy'))
@@ -21,6 +22,7 @@ export const routes: RouteObject[] = [
       { index: true, element: <Home /> },
       { path: 'services', element: <Services /> },
       { path: 'demos', element: <Work /> },
+      { path: 'apollo', element: <Apollo /> },
       { path: 'about', element: <About /> },
       { path: 'downloads', element: <Downloads /> },
       { path: 'contact', element: <Contact /> },

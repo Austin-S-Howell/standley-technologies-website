@@ -31,6 +31,7 @@ export const siteConfig = {
     { label: 'Home', to: '/' },
     { label: 'Services', to: '/services' },
     { label: 'Demos', to: '/demos' },
+    { label: 'Apollo', to: '/apollo' },
     { label: 'About', to: '/about' },
     { label: 'Contact', to: '/contact' },
   ],
