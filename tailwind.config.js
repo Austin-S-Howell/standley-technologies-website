@@ -118,14 +118,6 @@ export default {
           from: { transform: 'scale(0.5)', opacity: '0' },
           to: { transform: 'scale(1)', opacity: '1' },
         },
-        // /apollo hero: the film's comet — a streak of light that crosses once
-        // every cycle (most of the cycle is spent off-screen, invisible).
-        apolloComet: {
-          '0%': { transform: 'translate3d(-30vw, -12vh, 0) rotate(14deg)', opacity: '0' },
-          '6%': { opacity: '1' },
-          '22%': { transform: 'translate3d(80vw, 22vh, 0) rotate(14deg)', opacity: '0' },
-          '100%': { transform: 'translate3d(80vw, 22vh, 0) rotate(14deg)', opacity: '0' },
-        },
         apolloBreathe: {
           '0%, 100%': { opacity: '0.55', transform: 'translateX(-50%) scale(1)' },
           '50%': { opacity: '0.9', transform: 'translateX(-50%) scale(1.08)' },
@@ -151,7 +143,6 @@ export default {
         'apollo-shimmer': 'apolloShimmer 9s linear infinite',
         'apollo-shake': 'apolloShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97)',
         'apollo-pop': 'apolloPop 0.2s ease-out',
-        'apollo-comet': 'apolloComet 11s cubic-bezier(0.55, 0, 0.45, 1) 1.2s infinite',
         'apollo-breathe': 'apolloBreathe 7s ease-in-out infinite',
         'apollo-flow': 'apolloFlow 1.6s linear infinite',
         'drift-a': 'driftA 9s ease-in-out infinite',
