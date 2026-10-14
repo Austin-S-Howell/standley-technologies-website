@@ -2,8 +2,8 @@
 // Items marked [FILL IN] need real values from the business owner.
 
 export const siteConfig = {
-  name: 'Standley Technologies LLC',
-  legalName: 'Standley Technologies LLC',
+  name: 'Testing out agent changes',
+  legalName: 'Testing out agent changes',
   domain: 'standleytechnologies.com',
   url: 'https://standleytechnologies.com',
   tagline: 'Engineering that reaches the summit.',
