@@ -2,22 +2,21 @@
 // one place, same pattern as siteConfig.
 
 /**
- * Apollo's installers live in a public Cloud Storage bucket. The release
- * workflow (Howell-Technologies-Portal → release-apollo-desktop.yml) refreshes
+ * The site offers ONE download: Apollo Software Stack, the app that installs,
+ * updates and opens every Apollo app (Howell-Technologies-Portal →
+ * ApolloStack/). Its release workflow (release-apollo-stack.yml) refreshes
  * the files behind these STABLE names on every release, so the links below
- * never change — no site deploy needed when a new version ships.
- *
- * The bucket name and its `enoch-desktop/` path are the auto-update feed's
- * identity (every installed copy polls that exact address), which is why the
- * path doesn't carry the product's name. Only the file names are branding.
+ * never change — no site deploy needed when a new version ships, or when an
+ * app is added to the Stack (that's its catalog, published to the same
+ * bucket).
  */
-const APOLLO_BUCKET_BASE = 'https://storage.googleapis.com/howell-enoch-downloads/enoch-desktop'
+const STACK_BUCKET_BASE = 'https://storage.googleapis.com/howelltechwebsite-apollostack-downloads'
 
 /**
  * Soft access gate for the download buttons. A COURTESY GATE, not security:
  * this is a static SPA, so the code and the URLs both ship in the public JS
- * bundle, and the bucket objects themselves stay public (the app's
- * auto-updater depends on that). It keeps casual visitors from grabbing the
+ * bundle, and the bucket objects themselves stay public (the apps'
+ * auto-updaters depend on that). It keeps casual visitors from grabbing the
  * installers and makes the release feel invite-only — real access control
  * would need a backend issuing signed URLs.
  */
@@ -26,7 +25,7 @@ export const DOWNLOAD_ACCESS_CODE = 'STANDLEYAPOLLO2026'
 /** sessionStorage key remembering an unlocked gate for the rest of the tab session. */
 export const DOWNLOAD_UNLOCK_STORAGE_KEY = 'downloads:unlocked'
 
-export type PlatformKey = 'windows' | 'macos'
+export type PlatformKey = 'windows' | 'macos' | 'linux'
 
 export interface PlatformDownload {
   key: PlatformKey
@@ -35,42 +34,48 @@ export interface PlatformDownload {
   /** Direct download link (stable name — always the latest release). */
   url: string
   /**
-   * The platform's auto-update manifest. Public YAML whose `version:` line is
-   * the currently published release — fetched client-side for a live version
-   * number. Purely decorative: if the fetch fails (offline, CORS, CSP) the
-   * number is omitted and the download link still works.
+   * The platform's update feed: public JSON whose `version` is the currently
+   * published release — fetched client-side for a live version number.
+   * Purely decorative: if the fetch fails (offline, CORS, CSP) the number is
+   * omitted and the download link still works.
    */
   feedUrl: string
   /** One compact line: supported OS versions / hardware. */
   summary: string
 }
 
-export const apolloDownload = {
-  name: 'Apollo',
-  /** Apollo's real product tagline (enoch-web brand.ts). */
-  tagline: 'Your intelligent workspace',
+export const stackDownload = {
+  name: 'Apollo Software Stack',
+  /** The big shimmering word on the card; the rest of the name sits beneath it. */
+  wordmark: 'Apollo',
+  subtitle: 'Software Stack',
+  tagline: 'Every Apollo app, one download',
   /** Used in the page's SoftwareApplication JSON-LD, not rendered on screen. */
   description:
-    'Apollo is an AI workspace for your desktop — local AI, security first. Your data, your control.',
-  /**
-   * Windows 10+ and macOS 11+ come from the Electron 37 runtime the app ships
-   * on; the single universal .dmg (Intel + Apple Silicon) comes from the
-   * packaging config. Revisit if the desktop app majorly upgrades Electron.
-   */
+    'Apollo Software Stack installs, updates and opens every Apollo app — Apollo, Apollo Host, Apollo Connect, Apollo Dock and Apollo for VS Code — keeps earlier versions a click away, and shows where Apollo’s web apps live.',
+  /** What's inside, as chips. The Stack's catalog is the real list. */
+  apps: ['Apollo', 'Apollo Host', 'Apollo Connect', 'Apollo Dock', 'VS Code extension', 'ApolloHub'],
   platforms: [
     {
       key: 'windows',
       label: 'Windows',
-      url: `${APOLLO_BUCKET_BASE}/Apollo-Setup.exe`,
-      feedUrl: `${APOLLO_BUCKET_BASE}/latest.yml`,
+      url: `${STACK_BUCKET_BASE}/windows/ApolloStack-Setup.exe`,
+      feedUrl: `${STACK_BUCKET_BASE}/windows/latest.json`,
       summary: 'Windows 10 & 11 · 64-bit',
     },
     {
       key: 'macos',
       label: 'Mac',
-      url: `${APOLLO_BUCKET_BASE}/Apollo.dmg`,
-      feedUrl: `${APOLLO_BUCKET_BASE}/latest-mac.yml`,
-      summary: 'macOS 11+ · Intel & Apple Silicon',
+      url: `${STACK_BUCKET_BASE}/mac/ApolloStack.dmg`,
+      feedUrl: `${STACK_BUCKET_BASE}/mac/latest.json`,
+      summary: 'macOS 12+ · Intel & Apple Silicon',
+    },
+    {
+      key: 'linux',
+      label: 'Linux',
+      url: `${STACK_BUCKET_BASE}/linux/apollo-stack_amd64.deb`,
+      feedUrl: `${STACK_BUCKET_BASE}/linux/latest.json`,
+      summary: 'Ubuntu 22.04+ & Debian 12+ · 64-bit .deb',
     },
   ] as readonly PlatformDownload[],
 } as const

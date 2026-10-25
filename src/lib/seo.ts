@@ -54,9 +54,9 @@ export const pageMeta = {
     imageAlt: 'Apollo — Your Data, Your AI, Your Assistant.',
   },
   downloads: {
-    title: 'Download Apollo',
+    title: 'Download Apollo Software Stack',
     description:
-      'Download Apollo — your intelligent workspace — for Windows 10/11 and macOS 11+.',
+      'Download Apollo Software Stack — every Apollo app in one place — for Windows 10/11, macOS 12+ and Linux.',
     path: '/downloads',
   },
 } as const satisfies Record<string, PageMeta>

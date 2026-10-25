@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ComponentType, FormEvent } from 'react'
-import { Check, Download, Lock, LockOpen } from 'lucide-react'
+import { Check, Download, Lock, LockOpen, Terminal } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { pageMeta } from '@/lib/seo'
 import {
-  apolloDownload,
+  stackDownload,
   DOWNLOAD_ACCESS_CODE,
   DOWNLOAD_UNLOCK_STORAGE_KEY,
   type PlatformKey,
@@ -24,21 +24,22 @@ import { AppleLogo, ApolloLogo, MicrosoftLogo } from '@/components/BrandIcons'
 const softwareJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: apolloDownload.name,
-  description: apolloDownload.description,
-  operatingSystem: 'Windows 10, Windows 11, macOS 11 or later',
-  applicationCategory: 'BusinessApplication',
+  name: stackDownload.name,
+  description: stackDownload.description,
+  operatingSystem: 'Windows 10, Windows 11, macOS 12 or later, Ubuntu 22.04 or later, Debian 12 or later',
+  applicationCategory: 'UtilitiesApplication',
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
 }
 
 const platformLogos: Record<PlatformKey, ComponentType<{ className?: string }>> = {
   windows: MicrosoftLogo,
   macos: AppleLogo,
+  linux: Terminal,
 }
 
 /**
- * Live version numbers, read from the same public update manifests the
- * installed apps poll. Decorative on purpose: when the fetch can't run
+ * Live version numbers, read from the same public update feeds the installed
+ * Stacks poll (JSON with a `version`). Decorative on purpose: when the fetch can't run
  * (offline, CORS, CSP) the number is omitted and the download links — which
  * always serve the latest release under a stable name — are unaffected.
  */
@@ -47,11 +48,11 @@ function useLatestVersions(): Partial<Record<PlatformKey, string>> {
 
   useEffect(() => {
     const ctrl = new AbortController()
-    for (const platform of apolloDownload.platforms) {
+    for (const platform of stackDownload.platforms) {
       fetch(platform.feedUrl, { signal: ctrl.signal, cache: 'no-store' })
-        .then((res) => (res.ok ? res.text() : Promise.reject(new Error(`HTTP ${res.status}`))))
-        .then((text) => {
-          const version = text.match(/^version:\s*(\S+)/m)?.[1]
+        .then((res) => (res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`))))
+        .then((feed: { version?: unknown }) => {
+          const version = typeof feed.version === 'string' ? feed.version : undefined
           if (version) setVersions((prev) => ({ ...prev, [platform.key]: version }))
         })
         .catch(() => {
@@ -230,16 +231,23 @@ export default function Downloads() {
                 Space Grotesk h1 rule) at 800/-0.025em, the 5-stop shimmer
                 gradient at 300% width, and the blue glow. */}
             <h1 className="animate-apollo-shimmer bg-[linear-gradient(120deg,#0F172A_0%,#1D3A6E_40%,#2F6FDD_65%,#1D3A6E_90%,#0F172A_100%)] bg-[length:300%_100%] bg-clip-text font-sans text-4xl font-extrabold tracking-[-0.025em] text-transparent [filter:drop-shadow(0_2px_16px_rgba(96,165,250,0.22))]">
-              {apolloDownload.name}
+              <span className="sr-only">{stackDownload.name}</span>
+              <span aria-hidden>{stackDownload.wordmark}</span>
             </h1>
             <ApolloLogo size={34} className="shrink-0" />
           </div>
+          <p
+            aria-hidden
+            className="mt-1 text-center font-sans text-sm font-semibold uppercase tracking-[0.28em] text-[#1D3A6E]"
+          >
+            {stackDownload.subtitle}
+          </p>
           <p className="mt-2 text-center font-apollo-serif text-[15px] italic text-[#475569]">
-            {apolloDownload.tagline}
+            {stackDownload.tagline}
           </p>
 
           <div className="mt-5 flex flex-wrap justify-center gap-2">
-            {['Local AI', 'Security first', 'Your data, your control'].map((chip) => (
+            {stackDownload.apps.map((chip) => (
               <span
                 key={chip}
                 className="rounded-full border border-[rgba(15,23,42,0.16)] px-3 py-1 text-xs text-[#475569]"
@@ -251,14 +259,14 @@ export default function Downloads() {
 
           {unlocked ? (
             <div className="mt-7 space-y-3">
-                {apolloDownload.platforms.map((platform) => {
+                {stackDownload.platforms.map((platform) => {
                   const Logo = platformLogos[platform.key]
                   const version = versions[platform.key]
                   return (
                     <a
                       key={platform.key}
                       href={platform.url}
-                      aria-label={`Download ${apolloDownload.name} for ${platform.label}`}
+                      aria-label={`Download ${stackDownload.name} for ${platform.label}`}
                       className={gradientButton}
                     >
                       <Logo className="h-5 w-5 shrink-0" />
