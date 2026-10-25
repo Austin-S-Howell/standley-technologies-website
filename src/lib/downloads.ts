@@ -26,7 +26,7 @@ export const DOWNLOAD_ACCESS_CODE = 'STANDLEYAPOLLO2026'
 /** sessionStorage key remembering an unlocked gate for the rest of the tab session. */
 export const DOWNLOAD_UNLOCK_STORAGE_KEY = 'downloads:unlocked'
 
-export type PlatformKey = 'windows' | 'macos'
+export type PlatformKey = 'windows' | 'macos' | 'linux'
 
 export interface PlatformDownload {
   key: PlatformKey
@@ -71,6 +71,44 @@ export const apolloDownload = {
       url: `${APOLLO_BUCKET_BASE}/Apollo.dmg`,
       feedUrl: `${APOLLO_BUCKET_BASE}/latest-mac.yml`,
       summary: 'macOS 11+ · Intel & Apple Silicon',
+    },
+  ] as readonly PlatformDownload[],
+} as const
+
+/**
+ * Apollo Connect: the private network for your machines (Howell-Technologies-
+ * Portal → ApolloConnect/, released by release-apollo-connect.yml into a
+ * bucket of its own). Same stable-name scheme as Apollo's: the links always
+ * serve the latest release. Its feeds are JSON (`latest.json`, with a
+ * `version` field), not Apollo's YAML. Until a release runs with
+ * downloads=public, the links ask for a Google sign-in.
+ */
+const CONNECT_BUCKET_BASE = 'https://storage.googleapis.com/howelltechwebsite-apolloconnect-downloads'
+
+export const connectDownload = {
+  name: 'Apollo Connect',
+  tagline: 'Reach your own computers from anywhere and send files between them, privately.',
+  platforms: [
+    {
+      key: 'windows',
+      label: 'Windows',
+      url: `${CONNECT_BUCKET_BASE}/windows/ApolloConnect-Setup.exe`,
+      feedUrl: `${CONNECT_BUCKET_BASE}/windows/latest.json`,
+      summary: 'Windows 10 & 11 · 64-bit',
+    },
+    {
+      key: 'macos',
+      label: 'Mac',
+      url: `${CONNECT_BUCKET_BASE}/mac/ApolloConnect.dmg`,
+      feedUrl: `${CONNECT_BUCKET_BASE}/mac/latest.json`,
+      summary: 'macOS 12+ · Apple Silicon',
+    },
+    {
+      key: 'linux',
+      label: 'Linux',
+      url: `${CONNECT_BUCKET_BASE}/linux/apollo-connect_amd64.deb`,
+      feedUrl: `${CONNECT_BUCKET_BASE}/linux/latest.json`,
+      summary: 'Ubuntu 22.04+ & Debian 12+ · .deb',
     },
   ] as readonly PlatformDownload[],
 } as const

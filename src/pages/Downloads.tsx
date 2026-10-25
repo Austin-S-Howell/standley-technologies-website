@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ComponentType, FormEvent } from 'react'
-import { Check, Download, Lock, LockOpen } from 'lucide-react'
+import { Check, Download, Lock, LockOpen, Terminal } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { pageMeta } from '@/lib/seo'
 import {
   apolloDownload,
+  connectDownload,
   DOWNLOAD_ACCESS_CODE,
   DOWNLOAD_UNLOCK_STORAGE_KEY,
   type PlatformKey,
@@ -34,6 +35,7 @@ const softwareJsonLd = {
 const platformLogos: Record<PlatformKey, ComponentType<{ className?: string }>> = {
   windows: MicrosoftLogo,
   macos: AppleLogo,
+  linux: Terminal,
 }
 
 /**
@@ -278,6 +280,33 @@ export default function Downloads() {
                     </a>
                   )
                 })}
+
+              {/* Apollo Connect: the second download, quieter than Apollo's own. */}
+              <div className="!mt-8 border-t border-[rgba(15,23,42,0.08)] pt-6">
+                <h2 className="text-center font-sans text-lg font-bold tracking-[-0.01em] text-[#0F172A]">
+                  {connectDownload.name}
+                </h2>
+                <p className="mt-1 text-center text-xs leading-relaxed text-[#475569]">
+                  {connectDownload.tagline}
+                </p>
+                <div className="mt-4 grid grid-cols-3 gap-2">
+                  {connectDownload.platforms.map((platform) => {
+                    const Logo = platformLogos[platform.key]
+                    return (
+                      <a
+                        key={platform.key}
+                        href={platform.url}
+                        title={platform.summary}
+                        aria-label={`Download ${connectDownload.name} for ${platform.label} (${platform.summary})`}
+                        className="flex min-w-0 flex-col items-center gap-1.5 rounded-xl border border-[rgba(15,23,42,0.16)] bg-white/70 px-2 py-3 text-[#1D3A6E] transition-colors duration-200 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:border-[#1D3A6E] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#60A5FA]/60"
+                      >
+                        <Logo className="h-5 w-5" />
+                        <span className="text-xs font-semibold">{platform.label}</span>
+                      </a>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
           ) : (
             <AccessGate onUnlock={unlock} />
